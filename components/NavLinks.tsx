@@ -1,6 +1,7 @@
 
 'use client';
 
+import { COMPILER_INDEXES } from 'next/dist/shared/lib/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
@@ -17,9 +18,10 @@ interface NavLinksProps {
 export default function NavLinks({navItems}: NavLinksProps) {
 
     const pathname = usePathname();
-
+    console.log(pathname);
+    
     return (
-        <section className='w-full h-auto bg-header2 flex items-center text-white '>
+        <section className='w-full h-auto bg-header2 flex items-center text-white max-sm:justify-evenly'>
             <nav>
                 <ul className="flex items-center gap-0">
                     {navItems.map((item) => (

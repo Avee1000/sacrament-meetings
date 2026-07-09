@@ -174,6 +174,28 @@ const meetings: SacramentMeeting[] = [
     closingHymn: { number: 333, title: 'High on the Mountain Top' },
     closingPrayer: 'General Authority',
     announcements: ['Next General Conference: October']
+  },
+    {
+    id: 9,
+    date: '2026-07-05',
+    meetingType: 'general',
+    presiding: 'First Presidency',
+    conducting: 'Quorum of the Twelve Apostles',
+    openingHymn: { number: 26, title: 'Joseph Smith’s First Prayer' },
+    openingPrayer: 'General Authority',
+    wardBusiness: [
+      { description: 'Special message from the Stake regarding upcoming summer youth activities' },
+      { description: 'Announcement of the quarterly ward budget report review' }
+    ],
+    stakeBusiness: false,
+    sacramentHymn: { number: 199, title: "There Is a Fountain" },
+    speakers: [
+      { name: 'President Nelson', topic: 'The Gathering of Israel', type: 'speaker' },
+      { name: 'Elder Holland', topic: 'The Ministry of Jesus Christ', type: 'speaker' }
+    ],
+    closingHymn: { number: 333, title: 'High on the Mountain Top' },
+    closingPrayer: 'General Authority',
+    announcements: ['Next General Conference: October']
   }
 ];
 
