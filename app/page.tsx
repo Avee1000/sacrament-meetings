@@ -1,8 +1,22 @@
 import Image from "next/image";
-import MeetingDetails from "@/components/MeetingDetail";
+import MeetingDetails from "@/components/MeetingDetails";
 import { roboto } from "./fonts";
+import type { SacramentMeeting } from '@/lib/types';
+import { Suspense } from 'react';
 
-export default function Home() {
+async function getMeetings(): Promise<SacramentMeeting[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+  const res = await fetch(new URL('/api/meetings', baseUrl).toString(), { cache: 'no-store' });
+
+  if (!res.ok) throw new Error("Failed to fetch meetings");
+  const json = await res.json();
+  return json.data as SacramentMeeting[];
+}
+
+export default async function Home() {
+  const meetings = getMeetings();
+
   return (
     <div className="block w-full">
       <main className="">
@@ -24,13 +38,14 @@ export default function Home() {
                   Review, Plan, Manage your Sacrament Meeting agenda
                 </p>
                 <p className={`${roboto.className} text-[clamp(0.5rem,2vw,1.5rem)] my-2 leading-5.5 tracking-tight font-thin italic max-sm:leading-2.5`}>
-                  Discover God's plan of happiness for you
+                  Discover God&apos;s plan of happiness for you
                 </p>
               </section>
             </div>
           </div>
         </div>
-        {/* <MeetingDetails /> */}
+        <Suspense fallback={<div className="flex h-[60vh] items-center justify-center"><div className="flex space-x-4"><div className="h-4 w-4 rounded-full animate-pulse bg-white"></div><div className="h-4 w-4 rounded-full animate-pulse bg-white"></div><div className="h-4 w-4 rounded-full animate-pulse bg-white"></div></div><span className="ml-3 text-sm text-gray-600">Loading meetings...</span></div>}>
+        </Suspense>
       </main>
     </div>
   );

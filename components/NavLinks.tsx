@@ -1,9 +1,7 @@
-
 'use client';
 
-import { COMPILER_INDEXES } from 'next/dist/shared/lib/constants';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 
 export interface NavItem {
     href: string;
@@ -18,8 +16,7 @@ interface NavLinksProps {
 export default function NavLinks({navItems}: NavLinksProps) {
 
     const pathname = usePathname();
-    console.log(pathname);
-    
+
     return (
         <section className='w-full h-auto bg-header2 flex items-center text-white max-sm:justify-evenly'>
             <nav>
@@ -27,7 +24,7 @@ export default function NavLinks({navItems}: NavLinksProps) {
                     {navItems.map((item) => (
                         <li key={item.href} className='w-25 text-center'>
                             {(() => {
-                                const isActive = pathname === item.href || (item.href !== '/' && pathname?.startsWith(item.href));
+                                const isActive = pathname === item.href;
                                 return (
                                     <Link
                                         href={item.href}

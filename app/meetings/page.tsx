@@ -1,5 +1,5 @@
-import MeetingDetails from '@/components/MeetingDetail';
 import type { SacramentMeeting } from '@/lib/types';
+import MeetingDetails from '@/components/MeetingDetails';
 
 async function getMeetings(): Promise<SacramentMeeting[]> {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ||
@@ -16,7 +16,6 @@ export default async function MeetingsPage() {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
-
       {/* 1. Hero / Header Banner */}
       <div className="bg-[#023047] pt-16 pb-24 px-6 border-b-4 border-button-bg shadow-md">
         <div className="mx-auto max-w-6xl">
@@ -45,34 +44,32 @@ export default async function MeetingsPage() {
       </div>
 
       {/* 2. Main Content Area (Overlapping the header) */}
-      <section className="mx-auto max-w-6xl px-6 -mt-10 relative z-10">
+      <section className="">
+        <div className='mx-auto max-w-6xl px-6 -mt-10 relative z-10'>
+          {/* Action / Toolbar (Adds a professional "App" feel) */}
+          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-slate-600 font-medium text-sm">
+              Displaying all upcoming meetings
+            </p>
 
-        {/* Action / Toolbar (Adds a professional "App" feel) */}
-        <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-slate-600 font-medium text-sm">
-            Displaying all upcoming meetings
-          </p>
-
-          <button className="bg-subheading hover:bg-header2 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2 hover:cursor-pointer">
-            {/* Simple plus icon using SVG */}
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-            </svg>
-            Schedule Meeting
-          </button>
+            <button className="bg-subheading hover:bg-header2 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2 hover:cursor-pointer">
+              {/* Simple plus icon using SVG */}
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
+              </svg>
+              Schedule Meeting
+            </button>
+          </div>
         </div>
+
 
         {/* 3. The Meeting Cards List */}
-        <div>
-          {/* Note: Ensure MeetingDetails is expecting 'meetings' as a prop! */}
+        <div className='flex justify-center'>
+          <div className='max-w-500 mx-10 '>
+            <MeetingDetails meetings={meetings} />
+          </div>
         </div>
       </section>
-
-      <div className='flex justify-center'>
-        <div className='mx-10'>
-          <MeetingDetails meetings={meetings} />
-        </div>
-      </div>
     </main>
   );
 }

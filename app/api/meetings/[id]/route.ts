@@ -3,15 +3,16 @@ import { NextResponse } from 'next/server';
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
-  const id = Number(params.id);
+  const id = (await params).id;
+  const numericId = Number(id);
 
-  if (Number.isNaN(id)) {
+  if (Number.isNaN(numericId)) {
     return NextResponse.json({ error: 'Invalid meeting ID' }, { status: 400 });
   }
 
-  const meeting = getMeetingById(id);
+  const meeting = getMeetingById(numericId);
 
   if (!meeting) {
     return NextResponse.json({ error: 'Meeting not found' }, { status: 404 });
