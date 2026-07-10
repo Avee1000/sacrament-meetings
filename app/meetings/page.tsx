@@ -1,10 +1,12 @@
 import type { SacramentMeeting } from '@/lib/types';
 import MeetingDetails from '@/components/MeetingDetails';
 
+export const dynamic = 'force-dynamic';
+
 async function getMeetings(): Promise<SacramentMeeting[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
-  const res = await fetch(new URL('/api/meetings', baseUrl).toString(), { cache: 'no-store' });
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
+  const url = baseUrl ? new URL('/api/meetings', baseUrl).toString() : '/api/meetings';
+  const res = await fetch(url, { cache: 'no-store' });
 
   if (!res.ok) throw new Error("Failed to fetch meetings");
   const json = await res.json();
