@@ -64,7 +64,7 @@ export default async function MeetingsPage() {
 
         {/* 3. The Meeting Cards List (one MeetingCard per fetched meeting) */}
         <div className="flex justify-center">
-          <div className="mx-auto max-w-6xl px-6 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+          <div className="mx-auto max-w-500 px-6 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {meetings.map((meeting) => (
               <MeetingCard key={meeting.id} {...meeting} />
             ))}
