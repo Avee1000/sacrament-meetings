@@ -5,11 +5,9 @@ import { usePathname } from 'next/navigation';
 
 export const list = [
     { href: "/", label: "Home" },
-    { href: "/about", label: "Plan" },
-    { href: "/meetings", label: "Review" },
-    { href: "/resume", label: "Manage" }
+    { href: "/meetings", label: "Meetings" },
+    { href: "/meetings/current", label: "Current" },
 ];
-
 
 export default function Header() {
     const today = new Date();
@@ -20,7 +18,7 @@ export default function Header() {
 
 
     return (
-        <header className="">
+        <header>
             <div id="navigationContainer" className="relative h-auto bg-header text-gray-100 flex justify-between items-center w-full">
                 <div className="mx-auto flex w-full items-center justify-between py-1">
                     <div className="flex items-center justify-center p-4 px-8 bg-header">

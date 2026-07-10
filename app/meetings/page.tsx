@@ -1,12 +1,11 @@
 import type { SacramentMeeting } from '@/lib/types';
-import MeetingDetails from '@/components/MeetingDetails';
+import MeetingCard from '@/components/MeetingCard';
 
 export const dynamic = 'force-dynamic';
 
 async function getMeetings(): Promise<SacramentMeeting[]> {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000');
-  const url = baseUrl ? new URL('/api/meetings', baseUrl).toString() : '/api/meetings';
-  const res = await fetch(url, { cache: 'no-store' });
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL ?? 'http://localhost:3000';
+  const res = await fetch(new URL('/api/meetings', baseUrl).toString(), { cache: 'no-store' });
 
   if (!res.ok) throw new Error("Failed to fetch meetings");
   const json = await res.json();
@@ -33,7 +32,7 @@ export default async function MeetingsPage() {
               </p>
             </div>
 
-            {/* Quick Stats / Info Badge (Optional but professional) */}
+            {/* Quick Stats / Info Badge */}
             <div className="flex items-center gap-2 bg-header2 px-4 py-2 rounded-lg border border-subheading/30 shadow-inner">
               <span className="text-callout font-bold text-xl">{meetings.length}</span>
               <span className="text-white text-sm font-medium uppercase tracking-wider">
@@ -46,16 +45,15 @@ export default async function MeetingsPage() {
       </div>
 
       {/* 2. Main Content Area (Overlapping the header) */}
-      <section className="">
-        <div className='mx-auto max-w-6xl px-6 -mt-10 relative z-10'>
-          {/* Action / Toolbar (Adds a professional "App" feel) */}
+      <section>
+        <div className="mx-auto max-w-6xl px-6 -mt-10 relative z-10">
+          {/* Action / Toolbar */}
           <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
             <p className="text-slate-600 font-medium text-sm">
               Displaying all upcoming meetings
             </p>
 
             <button className="bg-subheading hover:bg-header2 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2 hover:cursor-pointer">
-              {/* Simple plus icon using SVG */}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
               </svg>
@@ -64,11 +62,12 @@ export default async function MeetingsPage() {
           </div>
         </div>
 
-
-        {/* 3. The Meeting Cards List */}
-        <div className='flex justify-center'>
-          <div className='max-w-500 mx-10 '>
-            <MeetingDetails meetings={meetings} />
+        {/* 3. The Meeting Cards List (one MeetingCard per fetched meeting) */}
+        <div className="flex justify-center">
+          <div className="mx-auto max-w-6xl px-6 grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            {meetings.map((meeting) => (
+              <MeetingCard key={meeting.id} {...meeting} />
+            ))}
           </div>
         </div>
       </section>
