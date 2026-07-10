@@ -19,7 +19,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
       {/* 1. Header Section (Deep Space Blue) */}
       <div className="bg-[#023047] p-5 text-white flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold uppercase tracking-widest text-callout">
+          <h2 className="text-2xl font-bold uppercase tracking-tight text-callout">
             {meeting.meetingType} Meeting
           </h2>
           <p className="text-background text-sm mt-1 font-medium">{formattedDate}</p>
