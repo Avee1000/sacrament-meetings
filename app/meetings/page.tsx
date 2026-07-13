@@ -13,6 +13,8 @@ async function getMeetings(): Promise<SacramentMeeting[]> {
 }
 
 export default async function MeetingsPage() {
+
+  // throw new Error("This is a deliberate test error!");
   const meetings = await getMeetings();
 
   return (

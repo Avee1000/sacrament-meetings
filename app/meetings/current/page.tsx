@@ -1,6 +1,16 @@
 import { notFound } from 'next/navigation';
-import { getMeetings } from '@/lib/meetings-db';
+import { SacramentMeeting } from '@/lib/types';
 import MeetingDetail from '@/components/MeetingDetail';
+
+async function getMeetings(date: string): Promise<SacramentMeeting[]> {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const res = await fetch(new URL(`/api/meetings?${date}`, baseUrl).toString(), { cache: 'no-store' });
+
+  if (!res.ok) throw new Error("Failed to fetch meetings");
+  const json = await res.json();
+  return json.data as SacramentMeeting[];
+}
+
 
 export default async function CurrentMeetingPage() {
   const today = new Date();
@@ -9,11 +19,7 @@ export default async function CurrentMeetingPage() {
   sunday.setDate(today.getDate() - dayOfWeek); // roll back to Sunday
   const dateString = sunday.toISOString().split('T')[0];
 
-  const meetings = getMeetings(dateString);
-
-  if (meetings.length === 0) {
-    notFound();
-  }
+  const meetings = await getMeetings(dateString);
 
   // Assuming there's only one sacrament meeting per Sunday, take the first one
   const currentMeeting = meetings[0];
