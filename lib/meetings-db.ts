@@ -1,6 +1,7 @@
 import type { SacramentMeeting } from './types';
-
 import { sql } from "@vercel/postgres";
+
+const ITEMS_PER_PAGE = 6;
 
 
 export async function getMeetings(date?: string | null): Promise<SacramentMeeting[]> {
@@ -21,4 +22,19 @@ export async function getMeetingById(id: number): Promise<SacramentMeeting | nul
     SELECT * FROM meetings WHERE id = ${id}
   `;
   return rows[0] ?? null;
+}
+
+export async function getMeetingsTotalPages(
+  query: string = ''
+): Promise<number> {
+  const searchTerm = `%${query}%`;
+  const { rows } = await sql`
+    SELECT COUNT(*) FROM meetings
+    WHERE
+      presiding ILIKE ${searchTerm}
+      OR conducting ILIKE ${searchTerm}
+      OR "meetingType" ILIKE ${searchTerm}
+      OR speakers::text ILIKE ${searchTerm}
+  `;
+  return Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
 }
