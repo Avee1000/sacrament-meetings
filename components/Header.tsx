@@ -14,7 +14,6 @@ export default function Header() {
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = today.toLocaleDateString('en-US', options);
     const pathname = usePathname();
-    const isActive = pathname === '/';
 
 
     return (
@@ -32,7 +31,7 @@ export default function Header() {
             </div>
             <div>
             </div>
-            {isActive ? <NavLinks navItems={list} /> : null}
+            {<NavLinks navItems={list} />}
             {/* <NavLinks /> */}
         </header>
     );
