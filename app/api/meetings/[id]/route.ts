@@ -15,7 +15,7 @@ export async function GET(
     );
   }
 
-  const meeting = getMeetingById(numericId);
+  const meeting =  await getMeetingById(numericId);
 
   if (!meeting) {
     return NextResponse.json(

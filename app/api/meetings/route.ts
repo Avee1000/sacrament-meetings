@@ -1,9 +1,10 @@
 import { getMeetings } from "@/lib/meetings-db";
 import { NextResponse } from "next/server";
+import { sql } from "@vercel/postgres";
 
-export async function GET(request: Request) {
+export async function GET(request: Request): Promise<NextResponse>{
     const date = new URL(request.url).searchParams.get("date");
-    const meetings = getMeetings(date);
+    const meetings = await getMeetings(date);
 
     if (!meetings || meetings.length === 0) {
         return NextResponse.json(
