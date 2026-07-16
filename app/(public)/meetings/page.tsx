@@ -4,7 +4,7 @@ import { ProjectSearch } from '@/components/SearchBar';
 import Loading from '@/app/ui/Loading';
 import LoadingSmall from '@/app/ui/LoadingSmall';
 import { Suspense } from 'react';
-import { fetchFilteredMeetings } from '@/app/api/meetings/route';
+import { fetchFilteredMeetings, countMeetings } from '@/app/api/meetings/route';
 import { getMeetingsTotalPages } from '@/lib/meetings-db';
 import { Pagination } from '@/components/Pagination';
 
@@ -18,9 +18,9 @@ async function getMeetings(props: {
   const currentPage = Number(searchParams?.page) || 1;
 
   const meetings = await fetchFilteredMeetings(query, currentPage);
-  const totalPages = await getMeetingsTotalPages(query);
+  const totalMeetings = await countMeetings(query);
 
-  return [meetings, totalPages];
+  return [meetings, totalMeetings];
 }
 
 async function FetchedMeetings(props: {
@@ -35,12 +35,12 @@ async function FetchedMeetings(props: {
 }
 
 async function MeetingLength(props: {
-  searchParams?: Promise<{ query?: string; page?: string }>;
+  searchParams?: Promise<{ query?: string}>;
 }) {
-  const [meetings] = await getMeetings(props);
+  const [, totalMeetings] = await getMeetings(props);
   return (
     <div className="flex items-center gap-2 bg-header2 px-4 py-2 rounded-lg border border-subheading/30 shadow-inner">
-      <span className="text-callout font-bold text-xl">{meetings.length}</span>
+      <span className="text-callout font-bold text-xl">{totalMeetings}</span>
       <span className="text-white text-sm font-medium uppercase tracking-wider">
         Scheduled
       </span>
@@ -53,8 +53,9 @@ async function MeetingLength(props: {
 export default async function MeetingsPage(props: {
   searchParams?: Promise<{ query?: string; page?: string }>;
 }) {
-
-  // throw new Error("This is a deliberate test error!");
+  const searchParams = await props.searchParams;
+  const query = searchParams?.query || '';
+  const totalPages = await getMeetingsTotalPages(query);
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
@@ -116,7 +117,7 @@ export default async function MeetingsPage(props: {
           </div>
         </div>
       </section>
-      <Pagination totalPages={await getMeetingsTotalPages()} />
+      <Pagination totalPages={totalPages} />
     </main>
   );
 }

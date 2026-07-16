@@ -39,7 +39,27 @@ export async function fetchFilteredMeetings(query: string, currentPage: number) 
       OR speakers::text ILIKE ${searchTerm}
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
-    console.log(searchTerm)
     return rows;
 }
 
+export async function countMeetings(query: string): Promise<number> {
+
+    const searchTerm = `%${query}%`;
+    if (searchTerm === ' ') {
+        const { rows } = await sql`
+        SELECT COUNT(*) FROM meetings
+        `;
+        const rowCount = Number(rows[0].count);
+        return rowCount;
+    }
+    const { rows } = await sql`
+    SELECT COUNT(*) FROM meetings
+    WHERE
+      presiding ILIKE ${searchTerm}
+      OR conducting ILIKE ${searchTerm}
+      OR "meetingType" ILIKE ${searchTerm}
+      OR speakers::text ILIKE ${searchTerm}
+    `;
+    const rowCount = Number(rows[0].count);
+    return rowCount;
+}

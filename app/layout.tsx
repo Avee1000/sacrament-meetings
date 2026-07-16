@@ -17,9 +17,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${roboto.className} h-full antialiased`}
+      className={`${roboto.className} h-full antialiased `}
     >
-      <body>
+      <body className="bodyEl">
         <Header />
         {children}
         <Footer />

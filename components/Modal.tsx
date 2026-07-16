@@ -178,7 +178,7 @@ export function Modal({ isOpen, onClose, meeting }: ModalProps) {
 
   return (
     <dialog
-      open={isOpen}
+      // open={isOpen}
       onClick={handleClose}
       className="fixed inset-0 m-0 h-full w-full bg-black/80 flex justify-center items-center backdrop-blur-md z-11 p-4"
     >

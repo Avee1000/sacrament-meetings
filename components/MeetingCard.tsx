@@ -1,13 +1,28 @@
 'use client'
 
 import { SacramentMeeting } from "@/lib/types";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Modal } from "./Modal";
 
 export default function MeetingCard(props: SacramentMeeting) {
 
   const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    const element = containerRef.current;
+    if (element) {
+      const parent = element.closest('.bodyEl');
+      if (parent) {
+        (parent as HTMLElement).style.overflowY = isOpen ? 'hidden' : 'auto';
+      }
+    }
+  }, [isOpen]);
+
+  const overflowHidden = () => {
+    setIsOpen(true)
+  }
 
   // Format the date into a human-readable string (e.g., Sunday, May 24, 2026)
   const formattedDate = new Date(props.date).toLocaleDateString('en-US', {
@@ -57,7 +72,8 @@ export default function MeetingCard(props: SacramentMeeting) {
       </div>
       {/* Opening the modal is now just a link */}
       <div className="w-100 flex justify-center">
-        <button onClick={() => setIsOpen(true)}
+        <button onClick={overflowHidden}
+          ref={containerRef}
           className="bg-header2 text-white px-6 py-2 rounded-md font-medium hover:cursor-pointer w-[50%] mb-4"
         >View program
         </button>

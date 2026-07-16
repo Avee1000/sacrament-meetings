@@ -26,7 +26,7 @@ export async function getMeetingById(id: number): Promise<SacramentMeeting | nul
 
 export async function getMeetingsTotalPages(
   query: string = ''
-): Promise<number> {
+){
   const searchTerm = `%${query}%`;
   const { rows } = await sql`
     SELECT COUNT(*) FROM meetings
@@ -36,5 +36,8 @@ export async function getMeetingsTotalPages(
       OR "meetingType" ILIKE ${searchTerm}
       OR speakers::text ILIKE ${searchTerm}
   `;
-  return Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
+  const pageNumber = Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
+  console.log(pageNumber);
+  return pageNumber;
+
 }
