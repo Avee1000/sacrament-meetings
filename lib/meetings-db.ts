@@ -5,13 +5,12 @@ const ITEMS_PER_PAGE = 6;
 
 
 export async function getMeetings(date?: string | null): Promise<SacramentMeeting[]> {
-  const { rows } = await sql<SacramentMeeting>`
-  SELECT * FROM meetings ORDER BY id
-  `;
+// Use a parameterized query to handle the optional filter safely
+  const query = date 
+    ? sql<SacramentMeeting>`SELECT * FROM meetings WHERE date = ${date} ORDER BY id`
+    : sql<SacramentMeeting>`SELECT * FROM meetings ORDER BY id`;
 
-  if (date) {
-    return rows.filter(m => m.date === date);
-  }
+  const { rows } = await query;
 
   return rows;
 }

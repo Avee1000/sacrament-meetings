@@ -1,7 +1,5 @@
-'use client';
 
 import NavLinks from "./NavLinks";
-import { usePathname } from 'next/navigation';
 
 export const list = [
     { href: "/", label: "Home" },
@@ -13,7 +11,6 @@ export default function Header() {
     const today = new Date();
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = today.toLocaleDateString('en-US', options);
-    const pathname = usePathname();
 
 
     return (

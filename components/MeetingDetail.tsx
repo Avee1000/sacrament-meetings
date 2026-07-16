@@ -14,7 +14,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
   });
 
   return (
-    <article className="border border-slate-200 rounded-xl shadow-lg bg-white overflow-hidden flex flex-col transition-all hover:shadow-xl">
+    <article className="border w-full border-slate-200 rounded-xl shadow-lg bg-white overflow-hidden flex flex-col transition-all hover:shadow-xl">
 
       {/* 1. Header Section (Deep Space Blue) */}
       <div className="bg-[#023047] p-5 text-white flex justify-between items-center">
