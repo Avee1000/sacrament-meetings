@@ -1,6 +1,5 @@
 import type { SacramentMeeting } from '@/lib/types';
 import MeetingCard from '@/components/MeetingCard';
-import { ProjectSearch } from '@/components/SearchBar';
 import Loading from '@/app/ui/Loading';
 import LoadingSmall from '@/app/ui/LoadingSmall';
 import { Suspense } from 'react';
@@ -59,7 +58,6 @@ export default async function MeetingsPage(props: {
 
   return (
     <main className="min-h-screen bg-slate-50 pb-20">
-      <ProjectSearch />
 
       {/* 1. Hero / Header Banner */}
       <div className="bg-[#023047] pt-16 pb-24 px-6 border-b-4 border-button-bg shadow-md">
