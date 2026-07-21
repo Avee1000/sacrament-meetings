@@ -1,7 +1,7 @@
 import type { SacramentMeeting } from '@/lib/types';
 import MeetingCard from '@/components/MeetingCard';
-import Loading from '@/app/ui/Loading';
-import LoadingSmall from '@/app/ui/LoadingSmall';
+import Loading from '@/components/Loading';
+import LoadingSmall from '@/components/LoadingSmall';
 import { Suspense } from 'react';
 import { fetchFilteredMeetings, countMeetings } from '@/app/api/meetings/route';
 import { getMeetingsTotalPages } from '@/lib/meetings-db';

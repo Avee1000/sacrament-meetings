@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { SacramentMeeting } from "@/lib/types";
 import PrintButton from "./PrintButton";
+import { X } from "lucide-react";
 
 interface MeetingDetailProps {
   meeting: SacramentMeeting;
@@ -180,8 +181,8 @@ export function Modal({ isOpen, onClose, meeting }: ModalProps) {
     <dialog
       // open={isOpen}
       onClick={handleClose}
-      className="fixed inset-0 m-0 h-full w-full bg-black/80 flex justify-center items-center backdrop-blur-md z-11 p-4"
-    >
+      className={`fixed inset-0 m-0 h-full w-full bg-black/80 flex justify-center items-center backdrop-blur-md z-50 p-4 transition-opacity duration-300 ${isExiting ? "opacity-0" : "opacity-100 animate-in fade-in"
+        }`}    >
       {/* 
         This is the main card container. 
         'overflow-hidden' ensures the rounded corners are respected.
@@ -190,9 +191,14 @@ export function Modal({ isOpen, onClose, meeting }: ModalProps) {
       <div
         onClick={(e) => e.stopPropagation()}
         onAnimationEnd={handleAnimationEnd}
-        className={`${isExiting ? 'animate-hide' : 'animate-show'}  shadow-xl w-full max-w-2xl  flex flex-col`}
+        className={`relative shadow-xl w-full max-w-2xl flex flex-col rounded-2xl overflow-hidden ${isExiting
+          ? "animate-out fade-out slide-out-to-bottom-10 duration-300"
+          : "animate-in fade-in slide-in-from-bottom-5 duration-300"
+          }`}
       >
-        <PrintButton />
+        <div className="absolute left-0 top-0 size-10 bg-white flex justify-center rounded-full cursor-pointer">
+          <PrintButton />
+        </div>
 
         {/* Content area scrolls independently */}
         <div>
@@ -200,12 +206,14 @@ export function Modal({ isOpen, onClose, meeting }: ModalProps) {
         </div>
 
         {/* Close button is part of the card, not the scrollable area */}
-        <button
-          onClick={handleClose}
-          className="w-[calc(100%/3)] py-4 bg-slate-50 hover:bg-slate-100 font-bold border-t border-slate-200 text-sm tracking-tight cursor-pointer my-0 mx-auto rounded-lg"
-        >
-          Close
-        </button>
+        <div className="absolute right-0 top-0 size-10 bg-white flex justify-center rounded-full cursor-pointer">
+          <button
+            onClick={handleClose}
+            className="cursor-pointer"
+          >
+            <X className="size-6" />
+          </button>
+        </div>
       </div>
     </dialog>
   );
