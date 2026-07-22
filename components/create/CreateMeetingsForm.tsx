@@ -2,15 +2,20 @@
 
 import { type State } from "@/lib/action";
 import { Button } from "@/components/ui/button";
-import { useState, KeyboardEvent, useRef, useActionState } from "react";
+import { useState, KeyboardEvent, useRef, useActionState, useEffect } from "react";
 import { X, Calendar, UserCheck, Speaker, Music, Mic, BookOpen, Send, Sparkles, Plus, Trash2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
 import { createSacramentMeeting } from "@/lib/action";
+import { toast } from "sonner";
+import { AlertCircle } from "lucide-react";
+import { redirect } from 'next/navigation';
+
 
 const initialState: State = {
     message: null,
     errors: {},
+    success: false
 };
 
 function Submit() {
@@ -75,6 +80,30 @@ export default function CreateMeetingForm() {
 
     const [closingHymnNum, setClosingHymnNum] = useState('');
     const [closingHymnTitle, setClosingHymnTitle] = useState('');
+
+    useEffect(() => {
+        if (state.success) {
+            toast.success(state.message);
+            redirect('/meetings');
+        } else if (state.message) {
+            toast.error(state.message, {
+                description: (
+                    <ul className="list-disc pl-5">
+                        {state.errors && Object.entries(state.errors).map(([key, value]) => (
+                            <li key={key} className="text-red-400">
+                                <strong>{key}:</strong> {value}
+                            </li>
+                        ))}
+                    </ul>
+                ),
+                cancel: { 
+                    label: 'Cancel', 
+                    onClick: () => {} 
+                },
+                icon: <AlertCircle className="size-5"/>
+            });
+        }
+    }, [state]);
 
     // Speaker state managers
     const addSpeakerRow = () => {
@@ -281,11 +310,11 @@ export default function CreateMeetingForm() {
                                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 transition-all"
                                         aria-describedby="organist-error"
                                     />
-                                    <div id="organist-error" aria-live="polite">
+                                    {/* <div id="organist-error" aria-live="polite">
                                         {state.errors?.organist?.map((error) => (
                                             <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
                                         ))}
-                                    </div>
+                                    </div> */}
                                 </div>
 
                                 <div>
@@ -301,27 +330,28 @@ export default function CreateMeetingForm() {
                                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 transition-all"
                                         aria-describedby="chorister-error"
                                     />
-                                    <div id="chorister-error" aria-live="polite">
+                                    {/* <div id="chorister-error" aria-live="polite">
                                         {state.errors?.chorister?.map((error) => (
                                             <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
                                         ))}
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
 
+                            {/* Hymn Grouping Fields */}
                             {/* Hymn Grouping Fields */}
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 {/* Opening Hymn Group */}
                                 <div className="p-4 rounded-2xl border border-gray-100 bg-gray-50/50 space-y-3">
                                     <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wide">Opening Hymn</h4>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 min-w-0"> {/* Added min-w-0 here */}
                                         <input
                                             type="number"
                                             placeholder="No."
                                             value={openingHymnNum}
                                             onChange={(e) => setOpeningHymnNum(e.target.value)}
                                             required
-                                            className="w-20 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+                                            className="w-20 shrink-0 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
                                         />
                                         <input
                                             type="text"
@@ -329,22 +359,27 @@ export default function CreateMeetingForm() {
                                             value={openingHymnTitle}
                                             onChange={(e) => setOpeningHymnTitle(e.target.value)}
                                             required
-                                            className="flex-1 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+                                            className="w-full min-w-0 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
                                         />
+                                    </div>
+                                    <div id="openingHymn-error" aria-live="polite">
+                                        {state.errors?.openingHymn?.map((error) => (
+                                            <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
+                                        ))}
                                     </div>
                                 </div>
 
                                 {/* Sacrament Hymn Group */}
                                 <div className="p-4 rounded-2xl border border-gray-100 bg-gray-50/50 space-y-3">
                                     <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wide">Sacrament Hymn</h4>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 min-w-0">
                                         <input
                                             type="number"
                                             placeholder="No."
                                             value={sacramentHymnNum}
                                             onChange={(e) => setSacramentHymnNum(e.target.value)}
                                             required
-                                            className="w-20 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+                                            className="w-20 shrink-0 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
                                         />
                                         <input
                                             type="text"
@@ -352,22 +387,27 @@ export default function CreateMeetingForm() {
                                             value={sacramentHymnTitle}
                                             onChange={(e) => setSacramentHymnTitle(e.target.value)}
                                             required
-                                            className="flex-1 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+                                            className="w-full min-w-0 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
                                         />
+                                    </div>
+                                    <div id="sacramentHymn-error" aria-live="polite">
+                                        {state.errors?.sacramentHymn?.map((error) => (
+                                            <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
+                                        ))}
                                     </div>
                                 </div>
 
                                 {/* Closing Hymn Group */}
                                 <div className="p-4 rounded-2xl border border-gray-100 bg-gray-50/50 space-y-3">
                                     <h4 className="text-xs font-bold text-gray-700 uppercase tracking-wide">Closing Hymn</h4>
-                                    <div className="flex gap-2">
+                                    <div className="flex gap-2 min-w-0">
                                         <input
                                             type="number"
                                             placeholder="No."
                                             value={closingHymnNum}
                                             onChange={(e) => setClosingHymnNum(e.target.value)}
                                             required
-                                            className="w-20 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+                                            className="w-20 shrink-0 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
                                         />
                                         <input
                                             type="text"
@@ -375,8 +415,13 @@ export default function CreateMeetingForm() {
                                             value={closingHymnTitle}
                                             onChange={(e) => setClosingHymnTitle(e.target.value)}
                                             required
-                                            className="flex-1 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
+                                            className="w-full min-w-0 px-3 py-2 rounded-xl border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2"
                                         />
+                                    </div>
+                                    <div id="closingHymn-error" aria-live="polite">
+                                        {state.errors?.closingHymn?.map((error) => (
+                                            <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
@@ -458,7 +503,7 @@ export default function CreateMeetingForm() {
                                 <button
                                     type="button"
                                     onClick={addBusinessRow}
-                                    className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-1 w-30 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
                                 >
                                     <Plus size={14} /> Add Business
                                 </button>
@@ -498,7 +543,7 @@ export default function CreateMeetingForm() {
                                 <button
                                     type="button"
                                     onClick={addSpeakerRow}
-                                    className="inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
+                                    className="inline-flex items-center gap-1 w-30 text-xs font-semibold px-3 py-1.5 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors cursor-pointer"
                                 >
                                     <Plus size={14} /> Add Speaker
                                 </button>
