@@ -6,6 +6,7 @@ import { Suspense } from 'react';
 import { fetchFilteredMeetings, countMeetings } from '@/app/api/meetings/route';
 import { getMeetingsTotalPages } from '@/lib/meetings-db';
 import { Pagination } from '@/components/Pagination';
+import CreateMeetingBar from '@/components/create/CreateMeetingBar';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,7 +23,7 @@ async function getMeetings(props: {
   return [meetings, totalMeetings];
 }
 
-async function FetchedMeetings(props: {
+export async function FetchedMeetings(props: {
   searchParams?: Promise<{ query?: string; page?: string }>;
 }) {
   const [meetings] = await getMeetings(props);
@@ -78,28 +79,14 @@ export default async function MeetingsPage(props: {
             <Suspense fallback={<LoadingSmall />}>
               <MeetingLength searchParams={props.searchParams} />
             </Suspense>
-
+    
           </div>
         </div>
       </div>
 
       {/* 2. Main Content Area (Overlapping the header) */}
       <section>
-        <div className="mx-auto max-w-6xl px-6 -mt-10 relative z-10">
-          {/* Action / Toolbar */}
-          <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
-            <p className="text-slate-600 font-medium text-sm">
-              Displaying all upcoming meetings
-            </p>
-
-            <button className="bg-subheading hover:bg-header2 text-white px-5 py-2.5 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2 hover:cursor-pointer">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-              </svg>
-              Schedule Meeting
-            </button>
-          </div>
-        </div>
+        <CreateMeetingBar />
 
         {/* 3. The Meeting Cards List (one MeetingCard per fetched meeting) */}
         <div className="flex justify-center items-center">

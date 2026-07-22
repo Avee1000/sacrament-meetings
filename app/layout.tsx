@@ -23,7 +23,7 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", roboto.className, "font-sans", inter.variable)}
     >
-      <body className="bodyEl">
+      <body className="bodyEl relative">
         <Header />
         {children}
         <Footer />

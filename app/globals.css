@@ -30,22 +30,14 @@
     }
   }
 
-  /* Functional Color Mapping */
   --color-header: #023047;
-  /* Deep Space Blue */
   --color-header2:#054667;
   --color-background: #8ECAE6;
-  /* Sky Blue (Light) */
   --color-text-body: #ffffff;
-  /* Recommended white/light for readability on deep background */
   --color-button-bg: #FB8500;
-  /* Princeton Orange */
   --color-button-text: #023047;
-  /* Deep Space Blue for contrast */
   --color-callout: #FFB703;
-  /* Amber Flame */
   --color-subheading: #219EBC;
-  /* Blue Green */
 
   /* Fluid Typography Variables */
   --text-hero: clamp(1rem, 3.5vw + 1rem, 5rem);
@@ -69,7 +61,8 @@
 
 body {
   box-sizing: border-box;
-  /* color: #054667; */
+  width: 100%;
+  margin: 0;
 }
 
 @theme inline {
