@@ -9,8 +9,8 @@ import { LoaderIcon } from "lucide-react";
 import { createSacramentMeeting } from "@/lib/action";
 import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
-import { redirect } from 'next/navigation';
-
+import { useRouter } from 'next/navigation';
+import { Checkbox } from "../ui/checkbox";
 
 const initialState: State = {
     message: null,
@@ -56,7 +56,8 @@ interface BusinessInputRow {
     description: string;
 }
 
-export default function CreateMeetingForm() {
+export default function CreateMeetingForm({ onSuccess }: { onSuccess?: () => void }) {
+    const router = useRouter();
     const [state, formAction] = useActionState(
         createSacramentMeeting,
         initialState
@@ -84,7 +85,11 @@ export default function CreateMeetingForm() {
     useEffect(() => {
         if (state.success) {
             toast.success(state.message);
-            redirect('/meetings');
+            onSuccess?.(); // Close the drawer
+            // Redirect after a short delay to allow the user to see the toast
+            setTimeout(() => {
+                router.push('/meetings');
+            }, 1000); // 1 second delay
         } else if (state.message) {
             toast.error(state.message, {
                 description: (
@@ -103,7 +108,7 @@ export default function CreateMeetingForm() {
                 icon: <AlertCircle className="size-5"/>
             });
         }
-    }, [state]);
+    }, [state, router]);
 
     // Speaker state managers
     const addSpeakerRow = () => {
@@ -532,7 +537,19 @@ export default function CreateMeetingForm() {
                                     <p className="text-xs text-gray-400 italic">No ward business added yet. Click above to add items.</p>
                                 )}
                             </div>
+
+                            <div className="mt-4 flex items-center gap-2">
+                                <Checkbox
+                                    id="stakeBusiness"
+                                    name="stakeBusiness"
+                                    className="size-5  rounded-full data-checked:bg-gray-700 border-gray-700"
+                                />
+                                <label htmlFor="stakeBusiness" className="text-sm font-medium text-gray-700">
+                                    This is a stake business meeting
+                                </label>
+                            </div>
                         </div>
+
 
                         {/* Section 6: Speakers & Topics Management */}
                         <div>

@@ -2,7 +2,7 @@
 
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
-import { z } from "zod";
+import { success, z } from "zod";
 import { redirect } from "next/navigation";
 
 // Zod schemas mirroring your TypeScript interfaces and form requirements
@@ -50,7 +50,7 @@ const MeetingFormSchema = z.object({
         .min(1, "Opening prayer person is required.")
         .max(100),
     wardBusiness: z.array(WardBusinessItemSchema).optional(),
-    stakeBusiness: z.boolean().optional(),
+    stakeBusiness: z.boolean().optional().default(false),
     sacramentHymn: HymnSchema,
     specialMusicalNumber: z.string().trim().optional(),
     speakers: z
@@ -70,8 +70,8 @@ export type State = {
         meetingType?: string[];
         presiding?: string[];
         conducting?: string[];
-        organist?: string[];
-        chorister?: string[];
+        // organist?: string[];
+        // chorister?: string[];
         announcements?: string[];
         openingHymn?: string[];
         openingPrayer?: string[];
@@ -88,58 +88,37 @@ export type State = {
 };
 
 /**
- * Helper to safely parse hymn inputs which might come in as 
- * "193 - I Stand All Amazed" or as a structured object.
+ * Safely parses JSON payloads coming from the new dynamic UI fields.
  */
-function parseHymnInput(rawInput: string | null) {
-    if (!rawInput) return { number: 0, title: "" };
-    const trimmed = rawInput.trim();
-    const match = trimmed.match(/^(\d+)(?:\s*[-–:]\s*(.*))?$/);
-    if (match) {
-        return {
-            number: parseInt(match[1], 10),
-            title: match[2] ? match[2].trim() : "Hymn",
-        };
+function safeJSONParse(value: FormDataEntryValue | null, fallback: any) {
+    if (!value || typeof value !== "string") return fallback;
+    try {
+        return JSON.parse(value);
+    } catch {
+        return fallback;
     }
-    return { number: 0, title: trimmed };
 }
 
 /**
- * Extracts and maps FormData fields to match your Zod schema and UI state.
+ * Extracts and maps FormData fields from your newly styled UI state.
  */
 function getMeetingData(formData: FormData) {
-    // Speakers are passed from the client tag-input as a comma-separated string
-    const rawSpeakers = formData.get("speakers");
-    let speakersList: any[] = [];
-
-    if (typeof rawSpeakers === "string" && rawSpeakers.trim() !== "") {
-        speakersList = rawSpeakers
-            .split(",")
-            .map((s) => s.trim())
-            .filter(Boolean)
-            .map((name) => ({
-                name,
-                topic: "TBD", // Default or adjust if your form handles topics separately
-                type: "speaker",
-            }));
-    }
-
     return {
         date: String(formData.get("date") ?? ""),
         meetingType: String(formData.get("meetingType") ?? "regular"),
         presiding: String(formData.get("presiding") ?? ""),
         conducting: String(formData.get("conducting") ?? ""),
-        organist: String(formData.get("organist") ?? ""),
-        chorister: String(formData.get("chorister") ?? ""),
-        announcements: [],
-        openingHymn: parseHymnInput(String(formData.get("openingHymn") ?? "")),
+        // organist: String(formData.get("organist") ?? ""),
+        // chorister: String(formData.get("chorister") ?? ""),
+        announcements: safeJSONParse(formData.get("announcements"), []),
+        openingHymn: safeJSONParse(formData.get("openingHymn"), { number: 0, title: "" }),
         openingPrayer: String(formData.get("openingPrayer") ?? ""),
-        wardBusiness: [],
-        stakeBusiness: false,
-        sacramentHymn: parseHymnInput(String(formData.get("sacramentHymn") ?? "")),
+        wardBusiness: safeJSONParse(formData.get("wardBusiness"), []),
+        stakeBusiness: formData.get("stakeBusiness") === "on",
+        sacramentHymn: safeJSONParse(formData.get("sacramentHymn"), { number: 0, title: "" }),
         specialMusicalNumber: String(formData.get("specialMusicalNumber") ?? ""),
-        speakers: speakersList,
-        closingHymn: parseHymnInput(String(formData.get("closingHymn") ?? "")),
+        speakers: safeJSONParse(formData.get("speakers"), []),
+        closingHymn: safeJSONParse(formData.get("closingHymn"), { number: 0, title: "" }),
         closingPrayer: String(formData.get("closingPrayer") ?? ""),
     };
 }
@@ -172,7 +151,7 @@ export async function createSacramentMeeting(prevState: State, formData: FormDat
 
     try {
         await sql`
-            INSERT INTO sacrament_meetings (
+            INSERT INTO meetings (
                 date, "meetingType", presiding, conducting, 
                 announcements, "openingHymn", "openingPrayer", 
                 "wardBusiness", "stakeBusiness", "sacramentHymn", 
@@ -192,10 +171,13 @@ export async function createSacramentMeeting(prevState: State, formData: FormDat
     }
 
     revalidatePath('/meetings');
-    redirect('/meetings');
+    return {
+        success: true,
+        message: "Sacrament meeting created successfully!",
+    }
 }
 
-export async function deleteMeeting(id: number) {
-    await sql`DELETE FROM sacrament_meetings WHERE id = ${id}`;
-    revalidatePath('/meetings');
-}
+// export async function deleteMeeting(id: number) {
+//     await sql`DELETE FROM sacrament_meetings WHERE id = ${id}`;
+//     revalidatePath('/meetings');
+// }

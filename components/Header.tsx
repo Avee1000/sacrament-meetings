@@ -5,6 +5,7 @@ export const list = [
     { href: "/", label: "Home" },
     { href: "/meetings", label: "Meetings" },
     { href: "/meetings/current", label: "Current" },
+    { href: "/meetings/create", label: "Create" }
 ];
 
 export default function Header() {

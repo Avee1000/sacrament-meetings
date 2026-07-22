@@ -28,36 +28,29 @@ export default function CreateMeetingBar() {
         <p className="text-slate-600 font-medium text-sm">
           Displaying all upcoming meetings
         </p>
-        <div >
+        <div>
           {isDesktop ? (
             <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen} swipeDirection="left">
-              <DrawerTrigger >
-                <CreateMeetingButton />
-              </DrawerTrigger>
-              <DrawerContent className="inset-0 w-[95%] flex flex-col [--drawer-inset:10px]">
-                <div className="p-4 overflow-y-auto grow">
-                  <CreateMeetingForm />
+              <CreateMeetingButton onClick={() => setIsDrawerOpen(true)} />
+              <DrawerContent className="w-[95%] h-auto">
+                <div className="p-4 overflow-y-auto">
+                  <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)}/>
                 </div>
                 <DrawerFooter className="p-4 border-t border-gray-200 bg-white ">
-                  <DrawerClose >
-                    <Button variant="outline">{isDesktop ? 'Close' : 'Cancel'}</Button>
-                  </DrawerClose>
+
+                  <Button className="w-[10%] my-0 mx-auto cursor-pointer" tabIndex={0} data-slot="drawer-close" onClick={() => setIsDrawerOpen(false)} variant="outline">{isDesktop ? 'Close' : 'Cancel'}</Button>
                 </DrawerFooter>
               </DrawerContent>
             </Drawer>
           ) : (
             <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen} swipeDirection="down" showSwipeHandle>
-              <DrawerTrigger >
-                <CreateMeetingButton />
-              </DrawerTrigger>
+              <CreateMeetingButton onClick={() => setIsDrawerOpen(true)} />
               <DrawerContent className="w-full flex flex-col">
                 <div className="p-4 overflow-y-auto grow">
-                  <CreateMeetingForm />
+                  <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)}/>
                 </div>
                 <DrawerFooter className="p-4 border-t border-gray-200 bg-white">
-                  <DrawerClose >
-                    <Button variant="outline">{isDesktop ? 'Close' : 'Cancel'}</Button>
-                  </DrawerClose>
+                  <Button onClick={() => setIsDrawerOpen(false)} variant="outline">{isDesktop ? 'Close' : 'Cancel'}</Button>
                 </DrawerFooter>
               </DrawerContent>
             </Drawer>)}

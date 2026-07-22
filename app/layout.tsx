@@ -5,6 +5,7 @@ import Footer from "@/components/Footer"
 import { roboto }  from "./fonts";
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner"
 
 const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 
@@ -26,6 +27,7 @@ export default function RootLayout({
       <body className="bodyEl relative">
         <Header />
         {children}
+        <Toaster position="top-right" />
         <Footer />
       </body>
     </html>

@@ -43,7 +43,6 @@ export async function fetchFilteredMeetings(query: string, currentPage: number) 
 }
 
 export async function countMeetings(query: string): Promise<number> {
-
     const searchTerm = `%${query}%`;
     if (searchTerm === ' ') {
         const { rows } = await sql`
@@ -63,3 +62,4 @@ export async function countMeetings(query: string): Promise<number> {
     const rowCount = Number(rows[0].count);
     return rowCount;
 }
+

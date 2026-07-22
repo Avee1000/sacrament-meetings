@@ -36,7 +36,16 @@ export async function getMeetingsTotalPages(
       OR speakers::text ILIKE ${searchTerm}
   `;
   const pageNumber = Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
-  console.log(pageNumber);
   return pageNumber;
-
 }
+
+export async function getLastPage(): Promise<number> {
+        const { rows } = await sql`
+        SELECT COUNT(*) FROM meetings
+        `;
+
+  const pageNumber = Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
+  console.log(pageNumber + 'last page')
+  return pageNumber;
+}
+

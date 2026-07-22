@@ -58,7 +58,7 @@ export default async function MeetingsPage(props: {
   const totalPages = await getMeetingsTotalPages(query);
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-20">
+    <main className="min-h-screen bg-slate-50 pb-20 flex flex-1 flex-col">
 
       {/* 1. Hero / Header Banner */}
       <div className="bg-[#023047] pt-16 pb-24 px-6 border-b-4 border-button-bg shadow-md">
