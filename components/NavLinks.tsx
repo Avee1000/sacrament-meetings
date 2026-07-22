@@ -57,8 +57,8 @@ export default function NavLinks({ navItems }: NavLinksProps) {
                                         href={item.href}
                                         aria-current={isActive ? 'page' : undefined}
                                         className={`block px-4 py-4  text-sm font-medium transition duration-300 ${isActive
-                                            ? 'text-gray-700 bg-orange-100'
-                                            : 'text-gray-100 hover:bg-orange-100 hover:text-gray-900'
+                                            ? 'text-gray-700 bg-white'
+                                            : 'text-gray-100 hover:bg-white hover:text-gray-900'
                                             }`}
                                     >
                                         {item.label}

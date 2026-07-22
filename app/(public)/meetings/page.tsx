@@ -4,7 +4,7 @@ import Loading from '@/components/Loading';
 import LoadingSmall from '@/components/LoadingSmall';
 import { Suspense } from 'react';
 import { fetchFilteredMeetings, countMeetings } from '@/app/api/meetings/route';
-import { getMeetingsTotalPages } from '@/lib/meetings-db';
+import { getMeetingsTotalPages, getLastPage } from '@/lib/meetings-db';
 import { Pagination } from '@/components/Pagination';
 import CreateMeetingBar from '@/components/create/CreateMeetingBar';
 
@@ -56,9 +56,11 @@ export default async function MeetingsPage(props: {
   const searchParams = await props.searchParams;
   const query = searchParams?.query || '';
   const totalPages = await getMeetingsTotalPages(query);
+  const lastPage = await getLastPage();
+
 
   return (
-    <main className="min-h-screen bg-slate-50 pb-20 flex flex-1 flex-col">
+    <main className="min-h-screen bg-slate-50 pb-20 flex flex-col">
 
       {/* 1. Hero / Header Banner */}
       <div className="bg-[#023047] pt-16 pb-24 px-6 border-b-4 border-button-bg shadow-md">
@@ -85,8 +87,8 @@ export default async function MeetingsPage(props: {
       </div>
 
       {/* 2. Main Content Area (Overlapping the header) */}
-      <section>
-        <CreateMeetingBar />
+      <section className='grow'>
+        <CreateMeetingBar pageNumber={lastPage} />
 
         {/* 3. The Meeting Cards List (one MeetingCard per fetched meeting) */}
         <div className="flex justify-center items-center">

@@ -1,17 +1,20 @@
 'use client'
 
-import { type State } from "@/lib/action";
+import { createSacramentMeeting, type State } from "@/lib/action";
 import { Button } from "@/components/ui/button";
 import { useState, KeyboardEvent, useRef, useActionState, useEffect } from "react";
 import { X, Calendar, UserCheck, Speaker, Music, Mic, BookOpen, Send, Sparkles, Plus, Trash2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
-import { createSacramentMeeting } from "@/lib/action";
 import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { Checkbox } from "../ui/checkbox";
 
+interface FormProps {
+    onSuccess?: () => void;
+    pageNumber: number;
+}
 const initialState: State = {
     message: null,
     errors: {},
@@ -56,7 +59,7 @@ interface BusinessInputRow {
     description: string;
 }
 
-export default function CreateMeetingForm({ onSuccess }: { onSuccess?: () => void }) {
+export default function CreateMeetingForm({ onSuccess, pageNumber }: FormProps) {
     const router = useRouter();
     const [state, formAction] = useActionState(
         createSacramentMeeting,
@@ -88,8 +91,8 @@ export default function CreateMeetingForm({ onSuccess }: { onSuccess?: () => voi
             onSuccess?.(); // Close the drawer
             // Redirect after a short delay to allow the user to see the toast
             setTimeout(() => {
-                router.push('/meetings');
-            }, 1000); // 1 second delay
+                router.push(`/meetings?page=${pageNumber}`);
+            }, 600); // 1 second delay
         } else if (state.message) {
             toast.error(state.message, {
                 description: (
