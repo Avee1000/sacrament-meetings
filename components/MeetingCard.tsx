@@ -4,6 +4,7 @@ import { SacramentMeeting } from "@/lib/types";
 import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { Modal } from "./Modal";
+import HoverOptions from "./edit/HoverOptions";
 
 export default function MeetingCard(props: SacramentMeeting) {
 
@@ -39,7 +40,10 @@ export default function MeetingCard(props: SacramentMeeting) {
     <article className="border border-slate-200 rounded-xl shadow-lg bg-white overflow-hidden flex flex-col transition-all hover:shadow-xl">
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} meeting={props} />
       {/* 1. Header Section (Deep Space Blue) */}
-      <div className="bg-[#023047] p-5 text-white flex justify-between items-center">
+      <div className="bg-[#023047] p-5 text-white flex justify-between items-center relative">
+        <div className="absolute top-3 right-3 group w-30 ">
+          <HoverOptions />
+        </div>
         <div>
           <h2 className="text-2xl font-bold uppercase tracking-tight text-callout">
             {props.meetingType} Meeting
@@ -49,7 +53,7 @@ export default function MeetingCard(props: SacramentMeeting) {
 
         {/* Stake Business Badge */}
         {props.stakeBusiness && (
-          <span className="bg-button-bg text-[#023047] text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-sm">
+          <span className="bg-button-bg text-[#023047] mt-auto text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wide shadow-sm">
             Stake Business
           </span>
         )}

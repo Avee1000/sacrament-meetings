@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function HoverOptions() {
     const [ishover, setIsHover] = useState(false);
-    const [isEllipsisHover, setIsEllipsisHover] = useState(false);
+    // const [isEllipsisHover, setIsEllipsisHover] = useState(false);
 
     if (ishover) {
         console.log('hover')
@@ -13,24 +13,24 @@ export default function HoverOptions() {
 
 
     return (
-        <div className="relative w-50 block bg-red-500 h-20 overflow-hidden group">
+        <div className={`relative w-full h-10 transition-all duration-300 overflow-hidden group opacity-100`}
+        onMouseEnter={() => setIsHover(false)}>
             {/* Ellipsis: Stays visible when clicked / ishover is true */}
             <div
-                className={`top-2 right-2 size-8 absolute grid place-items-center transition-all duration-300 bg-white rounded-full cursor-pointer shadow-md z-10 ${ishover ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
-                    }`}
+                className={`top-0 right-0 size-8 absolute grid place-items-center transition-all duration-300 bg-white rounded-full cursor-pointer shadow-md z-10 `}
                 onClick={() => setIsHover(!ishover)}>
                 <Ellipsis className="size-5 text-black" />
             </div>
 
             {/* Edit & Delete Buttons Container */}
             <div
-                className={`flex flex-row top-2 right-2 absolute items-center transition-all duration-300 ${ishover ? 'space-x-1 pr-9' : 'space-x-0 pr-0'}`}
+                className={`flex flex-row top-0 right-0 absolute items-center transition-all duration-300 ${ishover ? 'space-x-1 pr-9' : 'space-x-0 pr-0'}`}
             >
                 {/* Edit Button (Slides out to the left of the ellipsis) */}
                 <button
                     className={`bg-white size-8 shadow-md rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-all duration-500 transform ${ishover
                             ? 'opacity-100 scale-100 translate-x-0'
-                            : 'opacity-0 scale-50 translate-x-8 pointer-events-none'
+                            : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
                         }`}
                     aria-label="Edit meeting">
                     <EditIcon className="text-black size-5" />
@@ -40,7 +40,7 @@ export default function HoverOptions() {
                 <button
                     className={`bg-white size-8 shadow-md rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-all duration-300 transform ${ishover
                             ? 'opacity-100 scale-100 translate-x-0'
-                            : 'opacity-0 scale-50 translate-x-8 pointer-events-none'
+                            : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
                         }`}
                     aria-label="Delete meeting">
                     <Trash2 className="text-black size-5" />
