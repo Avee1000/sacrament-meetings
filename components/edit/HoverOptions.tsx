@@ -1,20 +1,24 @@
 'use client'
 
 import { EditIcon, Trash2, Ellipsis } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import EditMeetingDrawer from "./EditMeetingDrawer";
+import { SacramentMeeting } from "@/lib/types";
 
-export default function HoverOptions() {
+export default function HoverOptions(s: SacramentMeeting) {
     const [ishover, setIsHover] = useState(false);
-    // const [isEllipsisHover, setIsEllipsisHover] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    if (ishover) {
-        console.log('hover')
-    }
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setIsHover(false)
+        }, 10000)
+        return () => clearTimeout(timer)
+    }, [ishover])
 
 
     return (
-        <div className={`relative w-full h-10 transition-all duration-300 overflow-hidden group opacity-100`}
-        onMouseEnter={() => setIsHover(false)}>
+        <div className={`relative w-full h-10 transition-all duration-300 overflow-hidden group opacity-100`}>
             {/* Ellipsis: Stays visible when clicked / ishover is true */}
             <div
                 className={`top-0 right-0 size-8 absolute grid place-items-center transition-all duration-300 bg-white rounded-full cursor-pointer shadow-md z-10 `}
@@ -24,23 +28,25 @@ export default function HoverOptions() {
 
             {/* Edit & Delete Buttons Container */}
             <div
-                className={`flex flex-row top-0 right-0 absolute items-center transition-all duration-300 ${ishover ? 'space-x-1 pr-9' : 'space-x-0 pr-0'}`}
-            >
+                className={`flex flex-row top-0 right-0 absolute items-center transition-all duration-300 ${ishover ? 'space-x-1 pr-9' : 'space-x-0 pr-0'}`}>
                 {/* Edit Button (Slides out to the left of the ellipsis) */}
+                <EditMeetingDrawer isOpen={isOpen} onClose={() => setIsOpen(false)} sacrament={s}/>
                 <button
+                    onClick={() => setIsOpen(true)}
                     className={`bg-white size-8 shadow-md rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-all duration-500 transform ${ishover
-                            ? 'opacity-100 scale-100 translate-x-0'
-                            : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
+                        ? 'opacity-100 scale-100 translate-x-0'
+                        : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
                         }`}
                     aria-label="Edit meeting">
                     <EditIcon className="text-black size-5" />
                 </button>
 
+
                 {/* Delete Button (Slides out further to the left) */}
                 <button
                     className={`bg-white size-8 shadow-md rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-all duration-300 transform ${ishover
-                            ? 'opacity-100 scale-100 translate-x-0'
-                            : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
+                        ? 'opacity-100 scale-100 translate-x-0'
+                        : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
                         }`}
                     aria-label="Delete meeting">
                     <Trash2 className="text-black size-5" />

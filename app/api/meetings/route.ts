@@ -37,6 +37,7 @@ export async function fetchFilteredMeetings(query: string, currentPage: number) 
       OR conducting ILIKE ${searchTerm}
       OR "meetingType" ILIKE ${searchTerm}
       OR speakers::text ILIKE ${searchTerm}
+    ORDER BY id
         LIMIT ${ITEMS_PER_PAGE} OFFSET ${offset}
     `;
     return rows;

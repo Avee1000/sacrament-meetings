@@ -181,3 +181,63 @@ export async function createSacramentMeeting(prevState: State, formData: FormDat
 //     await sql`DELETE FROM sacrament_meetings WHERE id = ${id}`;
 //     revalidatePath('/meetings');
 // }
+
+export async function updateSacramentMeeting(id: string | number, prevState: State, formData: FormData): Promise<State> {
+    const parsed = MeetingFormSchema.safeParse(getMeetingData(formData));
+
+    if (!parsed.success) {
+        return {
+            errors: parsed.error.flatten().fieldErrors,
+            message: 'Missing or invalid fields. Failed to update sacrament meeting.',
+        };
+    }
+
+    const {
+        date,
+        meetingType,
+        presiding,
+        conducting,
+        announcements,
+        openingHymn,
+        openingPrayer,
+        wardBusiness,
+        stakeBusiness,
+        sacramentHymn,
+        speakers,
+        closingHymn,
+        closingPrayer,
+    } = parsed.data;
+
+    try {
+        await sql`
+            UPDATE meetings 
+            SET 
+                date = ${date},
+                "meetingType" = ${meetingType},
+                presiding = ${presiding},
+                conducting = ${conducting},
+                announcements = ${(announcements || []) as any}::text[],
+                "openingHymn" = ${JSON.stringify(openingHymn)}::jsonb,
+                "openingPrayer" = ${openingPrayer},
+                "wardBusiness" = ${JSON.stringify(wardBusiness || [])}::jsonb,
+                "stakeBusiness" = ${stakeBusiness ?? false},
+                "sacramentHymn" = ${JSON.stringify(sacramentHymn)}::jsonb,
+                speakers = ${JSON.stringify(speakers)}::jsonb,
+                "closingHymn" = ${JSON.stringify(closingHymn)}::jsonb,
+                "closingPrayer" = ${closingPrayer}
+            WHERE id = ${id}
+        `;
+    } catch (error) {
+        // console.error("Database Error:", error);
+        return {
+            message: 'Database Error: Failed to update sacrament meeting.',
+        };
+    }
+
+    revalidatePath('/meetings');
+    return {
+        success: true,
+        message: "Sacrament meeting Updated successfully!",
+        errors: {}
+    }
+}
