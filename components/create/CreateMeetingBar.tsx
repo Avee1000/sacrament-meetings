@@ -22,9 +22,9 @@ export default function CreateMeetingBar({ pageNumber }: { pageNumber: number })
 
 
   return (
-    <div className="mx-auto max-w-6xl px-6 -mt-10">
+    <div className="mx-auto max-w-5xl px-6 -mt-10">
       {/* Action / Toolbar */}
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-8 flex flex-col sm:flex-row justify-between items-center gap-4 sm:w-[80%] sm:justify-self-center lg:w-full">
         <p className="text-slate-600 font-medium text-sm">
           Displaying all upcoming meetings
         </p>

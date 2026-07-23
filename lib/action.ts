@@ -55,13 +55,35 @@ const MeetingFormSchema = z.object({
     specialMusicalNumber: z.string().trim().optional(),
     speakers: z
         .array(SpeakerItemSchema)
-        .min(1, "Please provide at least one speaker."),
+        .min(1, "Please provide at least one speaker.").optional(),
     closingHymn: HymnSchema,
     closingPrayer: z
         .string()
         .trim()
         .min(1, "Closing prayer person is required.")
         .max(100),
+})
+.superRefine((data, ctx) => {
+    // 2. If it's NOT a testimony meeting, require at least one speaker
+    if (data.meetingType !== "testimony") {
+        if (!data.speakers || data.speakers.length === 0) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Please provide at least one speaker.",
+                path: ["speakers"],
+            });
+        }
+    }
+    // 3. If it's a testimony meeting, speakers must not exist
+    if (data.meetingType === "testimony") {
+        if (data.speakers && data.speakers.length > 0) {
+            ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                message: "Testimony meetings should not have speakers.",
+                path: ["speakers"],
+            });
+        }
+    }
 });
 
 export type State = {
@@ -240,4 +262,8 @@ export async function updateSacramentMeeting(id: string | number, prevState: Sta
         message: "Sacrament meeting Updated successfully!",
         errors: {}
     }
+}
+
+function superRefine(arg0: (data: any, ctx: any) => void) {
+    throw new Error("Function not implemented.");
 }

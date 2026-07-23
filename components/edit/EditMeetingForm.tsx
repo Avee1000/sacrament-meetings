@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { AlertCircle } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { Checkbox } from "../ui/checkbox";
-import { SacramentMeeting } from "@/lib/types";
+import { SacramentMeeting, MeetingType } from "@/lib/types";
 
 interface FormProps {
     onSuccess?: () => void;
@@ -87,6 +87,13 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
     );
     const [announcementInput, setAnnouncementInput] = useState('');
     const annInputRef = useRef<HTMLInputElement>(null);
+    const [meetingType, setMeetingType] = useState<MeetingType>(sacrament.meetingType);
+
+    useEffect(() => {
+        if (meetingType === "testimony") {
+            setSpeakers([]);
+        }
+    }, [meetingType]);
 
     // Hymn split state inputs to match HymnSchema ({ number, title })
     const [openingHymnNum, setOpeningHymnNum] = useState(
@@ -258,7 +265,8 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
                                     <select
                                         id="meetingType"
                                         name="meetingType"
-                                        defaultValue={sacrament.meetingType}
+                                        value={meetingType}
+                                        onChange={(e) => setMeetingType(e.target.value as MeetingType)}
                                         required
                                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all"
                                         aria-describedby="meetingType-error"
@@ -589,6 +597,7 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
 
 
                         {/* Section 6: Speakers & Topics Management */}
+                        {meetingType !== 'testimony' && (
                         <div>
                             <div className="flex items-center justify-between mb-3">
                                 <h3 className="text-xs font-bold uppercase tracking-wider text-gray-400 flex items-center gap-2">
@@ -656,6 +665,7 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
                                 ))}
                             </div>
                         </div>
+                        )}
 
                         {/* Section 7: Announcements */}
                         <div>
