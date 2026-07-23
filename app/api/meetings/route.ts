@@ -9,7 +9,6 @@ const ITEMS_PER_PAGE = 6;
 export async function GET(request: Request): Promise<NextResponse> {
     const date = new URL(request.url).searchParams.get("date");
     const meetings = await getMeetings(date);
-    //   await new Promise(res => setTimeout(res, 50000));
 
 
     if (!meetings || meetings.length === 0) {
