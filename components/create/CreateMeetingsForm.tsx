@@ -2,7 +2,7 @@
 
 import { createSacramentMeeting, type State } from "@/lib/action";
 import { Button } from "@/components/ui/button";
-import { useState, KeyboardEvent, useRef, useActionState, useEffect } from "react";
+import { useState, KeyboardEvent, useRef, useActionState, useEffect, ChangeEvent } from "react";
 import { X, Calendar, UserCheck, Speaker, Music, Mic, BookOpen, Send, Sparkles, Plus, Trash2 } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
@@ -76,12 +76,29 @@ export default function CreateMeetingForm({ onSuccess, pageNumber }: FormProps) 
     const [announcementInput, setAnnouncementInput] = useState('');
     const annInputRef = useRef<HTMLInputElement>(null);
     const [meetingType, setMeetingType] = useState<MeetingType>('regular');
+    const [date, setDate] = useState('');
+    const [dateError, setDateError] = useState('');
 
     useEffect(() => {
         if (meetingType === "testimony") {
             setSpeakers([]);
         }
     }, [meetingType]);
+
+    const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const val = e.target.value;
+        setDate(val);
+        if (val) {
+            const d = new Date(val + "T00:00:00");
+            if (d.getDay() !== 0) {
+                setDateError("Meetings can only be scheduled on Sundays.");
+            } else {
+                setDateError("");
+            }
+        } else {
+            setDateError("");
+        }
+    };
 
     // Hymn split state inputs to match HymnSchema ({ number, title })
     const [openingHymnNum, setOpeningHymnNum] = useState('');
@@ -221,11 +238,16 @@ export default function CreateMeetingForm({ onSuccess, pageNumber }: FormProps) 
                                         id="date"
                                         name="date"
                                         type="date"
+                                        value={date}
+                                        onChange={handleDateChange}
                                         required
                                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all"
                                         style={{ accentColor: 'var(--color-button-bg)' }}
                                         aria-describedby="date-error"
                                     />
+                                    {dateError && (
+                                        <p className="mt-1 text-xs font-medium text-red-500">{dateError}</p>
+                                    )}
                                     <div id="date-error" aria-live="polite">
                                         {state.errors?.date?.map((error) => (
                                             <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>

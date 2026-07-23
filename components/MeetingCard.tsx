@@ -2,7 +2,6 @@
 
 import { SacramentMeeting } from "@/lib/types";
 import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
 import { Modal } from "./Modal";
 import HoverOptions from "./edit/HoverOptions";
 
@@ -42,7 +41,7 @@ export default function MeetingCard(props: SacramentMeeting) {
       {/* 1. Header Section (Deep Space Blue) */}
       <div className="bg-[#023047] p-5 text-white flex justify-between items-center relative">
         <div className="absolute top-2 right-2 group w-30">
-          <HoverOptions s={props}/>
+          <HoverOptions s={props} />
         </div>
         <div>
           <h2 className="text-2xl font-bold uppercase tracking-tight text-callout">

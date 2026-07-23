@@ -25,7 +25,11 @@ const MeetingFormSchema = z.object({
     date: z
         .string()
         .trim()
-        .min(1, "Date is required."),
+        .min(1, "Date is required.")
+        .refine((val) => {
+            const d = new Date(val + "T00:00:00");
+            return d.getDay() === 0;
+        }, { message: "Meetings can only be scheduled on Sundays." }),
     meetingType: z.enum(
         ["testimony", "regular", "stake", "general"],
         { message: "Please select a valid meeting type." }
@@ -55,7 +59,7 @@ const MeetingFormSchema = z.object({
     specialMusicalNumber: z.string().trim().optional(),
     speakers: z
         .array(SpeakerItemSchema)
-        .min(1, "Please provide at least one speaker.").optional(),
+        .optional(),
     closingHymn: HymnSchema,
     closingPrayer: z
         .string()
@@ -199,10 +203,10 @@ export async function createSacramentMeeting(prevState: State, formData: FormDat
     }
 }
 
-// export async function deleteMeeting(id: number) {
-//     await sql`DELETE FROM sacrament_meetings WHERE id = ${id}`;
-//     revalidatePath('/meetings');
-// }
+export async function deleteMeeting(id: number) {
+    await sql`DELETE FROM meetings WHERE id = ${id}`;
+    revalidatePath('/meetings');
+}
 
 export async function updateSacramentMeeting(id: string | number, prevState: State, formData: FormData): Promise<State> {
     const parsed = MeetingFormSchema.safeParse(getMeetingData(formData));

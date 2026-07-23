@@ -34,7 +34,7 @@ export default function CreateMeetingBar({ pageNumber }: { pageNumber: number })
               <CreateMeetingButton onClick={() => setIsDrawerOpen(true)} />
               <DrawerContent className="w-[95%] md:w-[95%] lg:w-[70%] h-auto">
                 <div className="p-4 overflow-y-auto">
-                  <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)} pageNumber={pageNumber}/>
+                  <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)} pageNumber={pageNumber} />
                 </div>
                 <DrawerFooter className="p-4 border-t border-gray-200 bg-white ">
 
@@ -47,10 +47,10 @@ export default function CreateMeetingBar({ pageNumber }: { pageNumber: number })
               <CreateMeetingButton onClick={() => setIsDrawerOpen(true)} />
               <DrawerContent className="w-full flex flex-col">
                 <div className="p-4 overflow-y-auto grow">
-                  <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)} pageNumber={pageNumber}/>
+                  <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)} pageNumber={pageNumber} />
                 </div>
                 <DrawerFooter className="p-4 border-t border-gray-200 bg-white">
-                  <Button onClick={() => setIsDrawerOpen(false)} variant="outline">{isDesktop ? 'Close' : 'Cancel'}</Button>
+                  <DrawerClose render={<Button variant="outline" className="w-[20%] my-0 mx-auto cursor-pointer">Close</Button>} />
                 </DrawerFooter>
               </DrawerContent>
             </Drawer>)}

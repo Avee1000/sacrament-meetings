@@ -4,10 +4,32 @@ import { EditIcon, Trash2, Ellipsis } from "lucide-react";
 import { useState, useEffect } from "react";
 import EditMeetingDrawer from "./EditMeetingDrawer";
 import { SacramentMeeting } from "@/lib/types";
-
-export default function HoverOptions({s}:{s:SacramentMeeting}) {
+import { deleteMeeting } from "@/lib/action";
+import { toast } from "sonner";
+export default function HoverOptions({ s }:{ s:SacramentMeeting }) {
     const [ishover, setIsHover] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
+    const [isDeleting, setIsDeleting] = useState(false);
+
+    const handleDelete = async () => {
+        if (isDeleting) return;
+        setIsDeleting(true);
+        await toast.promise(
+            new Promise((resolve, reject) => {
+                deleteMeeting(s.id)
+                    .then(() => resolve(true))
+                    .catch((error) => reject(error));
+            }),
+            {
+                loading: "Deleting meeting...",
+                success: () => {
+                    window.location.reload();
+                    return "Meeting deleted successfully!";
+                },
+                error: "Failed to delete meeting. Please try again.",
+            }
+        );
+    }
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -44,10 +66,11 @@ export default function HoverOptions({s}:{s:SacramentMeeting}) {
 
                 {/* Delete Button (Slides out further to the left) */}
                 <button
+                    onClick={handleDelete}
+                    disabled={isDeleting}
                     className={`bg-white size-8 shadow-md rounded-full flex justify-center items-center cursor-pointer hover:bg-gray-300 transition-all duration-300 transform ${ishover
                         ? 'opacity-100 scale-100 translate-x-0'
-                        : 'opacity-0 scale-50 translate-x-4 pointer-events-none'
-                        }`}
+                        : 'opacity-0 scale-50 translate-x-4 pointer-events-none'} ${isDeleting ? 'opacity-50 cursor-not-allowed' : ''}`}
                     aria-label="Delete meeting">
                     <Trash2 className="text-black size-5" />
                 </button>
