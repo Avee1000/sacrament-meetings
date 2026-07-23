@@ -42,7 +42,7 @@ export default function MeetingCard(props: SacramentMeeting) {
       {/* 1. Header Section (Deep Space Blue) */}
       <div className="bg-[#023047] p-5 text-white flex justify-between items-center relative">
         <div className="absolute top-2 right-2 group w-30">
-          <HoverOptions {...props}/>
+          <HoverOptions s={props}/>
         </div>
         <div>
           <h2 className="text-2xl font-bold uppercase tracking-tight text-callout">

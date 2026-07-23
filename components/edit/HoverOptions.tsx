@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import EditMeetingDrawer from "./EditMeetingDrawer";
 import { SacramentMeeting } from "@/lib/types";
 
-export default function HoverOptions(s: SacramentMeeting) {
+export default function HoverOptions({s}:{s:SacramentMeeting}) {
     const [ishover, setIsHover] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
