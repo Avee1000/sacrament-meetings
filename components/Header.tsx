@@ -1,7 +1,5 @@
 import { auth } from '@/auth';
 import HeaderContent from './HeaderContent';
-import { auth } from '@/auth';
-import HeaderContent from './HeaderContent';
 
 export const list = [
     { href: "/", label: "Home" },
