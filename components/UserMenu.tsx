@@ -42,7 +42,7 @@ export default function UserMenu({ session }: UserMenuProps) {
     <div className="relative" ref={menuRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 p-1 rounded-full hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
+        className="flex items-center gap-2 p-1 mr-1 rounded-full hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-white/50"
         aria-expanded={isOpen}
         aria-haspopup="true"
       >

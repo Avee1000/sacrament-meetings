@@ -183,7 +183,7 @@ export async function createSacramentMeeting(prevState: State, formData: FormDat
                 speakers, "closingHymn", "closingPrayer"
             ) VALUES (
                 ${date}, ${meetingType}, ${presiding}, ${conducting},
-                ${(announcements || []) as unknown as string[]}::text[], ${JSON.stringify(openingHymn)}::jsonb, ${openingPrayer},
+                ${(announcements || []) as any}::text[], ${JSON.stringify(openingHymn)}::jsonb, ${openingPrayer},
                 ${JSON.stringify(wardBusiness || [])}::jsonb, ${stakeBusiness ?? false}, ${JSON.stringify(sacramentHymn)}::jsonb,
                 ${JSON.stringify(speakers)}::jsonb, ${JSON.stringify(closingHymn)}::jsonb, ${closingPrayer}
             )
@@ -241,7 +241,7 @@ export async function updateSacramentMeeting(id: string | number, prevState: Sta
                 "meetingType" = ${meetingType},
                 presiding = ${presiding},
                 conducting = ${conducting},
-                announcements = ${(announcements || []) as unknown as string[]}::text[],
+                announcements = ${(announcements || []) as any}::text[],
                 "openingHymn" = ${JSON.stringify(openingHymn)}::jsonb,
                 "openingPrayer" = ${openingPrayer},
                 "wardBusiness" = ${JSON.stringify(wardBusiness || [])}::jsonb,
