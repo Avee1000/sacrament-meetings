@@ -8,8 +8,12 @@ import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { authenticateUser as createUserLogin } from "@/lib/auth-action";
+<<<<<<< HEAD
 import { useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+=======
+import { useRouter } from "next/router";
+>>>>>>> 531eeb3fc33ee6d03c1a68a34a4a8bdef1fbe2ed
 
 // Define LoginForm State type matching standard server action patterns
 export type LoginState = {
@@ -66,6 +70,7 @@ export default function LoginForm() {
     const searchParams = useSearchParams();
 
     useEffect(() => {
+<<<<<<< HEAD
         const messageKey = searchParams?.get("message");
         const messages: Record<string, string> = {
             "signup-success":
@@ -101,6 +106,15 @@ export default function LoginForm() {
             }
         }
     }, [searchParams, router, state]);
+=======
+        if ((state.errors && Object.keys(state.errors).length > 0) || (state.message && !state.success && Object.keys(state.errors || {}).length === 0)) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
+            setShowErrors(true);
+            const timer = setTimeout(() => setShowErrors(false), 5000);
+            return () => clearTimeout(timer);
+        } 
+    }, [state.errors, state.message, state.success]);
+>>>>>>> 531eeb3fc33ee6d03c1a68a34a4a8bdef1fbe2ed
 
     return (
         <div
