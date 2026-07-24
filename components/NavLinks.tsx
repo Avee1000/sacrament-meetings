@@ -41,8 +41,9 @@ export default function NavLinks({ navItems }: NavLinksProps) {
     // const closeSearchButton = () => {
     //     setIsOpen(false)
     // }
-
     const pathname = usePathname();
+
+    if(pathname === "/signup" || pathname === "/login") return null;
 
     return (
         <section className='w-full h-auto bg-header2 flex items-center text-white max-sm:justify-evenly'>

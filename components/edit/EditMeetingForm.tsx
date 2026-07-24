@@ -81,21 +81,22 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
         }))
     );
     const [announcementsList, setAnnouncementsList] = useState<string[]>(
-        sacrament.announcements ?? [].map((announcement) =>
-            announcement
-        )
+        sacrament.announcements ?? []
     );
     const [announcementInput, setAnnouncementInput] = useState('');
     const annInputRef = useRef<HTMLInputElement>(null);
     const [meetingType, setMeetingType] = useState<MeetingType>(sacrament.meetingType);
     const [date, setDate] = useState(new Date(sacrament.date).toISOString().split('T')[0]);
     const [dateError, setDateError] = useState('');
+    const [stakeBusiness, setStakeBusiness] = useState(sacrament.stakeBusiness);
 
-    useEffect(() => {
-        if (meetingType === "testimony") {
+    const handleMeetingTypeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const newType = e.target.value as MeetingType;
+        setMeetingType(newType);
+        if (newType === "testimony") {
             setSpeakers([]);
         }
-    }, [meetingType]);
+    };
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
@@ -173,7 +174,7 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
 
     const updateSpeaker = (index: number, field: keyof SpeakerInputRow, value: string) => {
         const updated = [...speakers];
-        updated[index][field] = value as any;
+        updated[index][field] = value as SpeakerInputRow[typeof field];
         setSpeakers(updated);
     };
 
@@ -247,6 +248,7 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
                         <input type="hidden" name="speakers" value={JSON.stringify(speakers)} />
                         <input type="hidden" name="wardBusiness" value={JSON.stringify(wardBusiness)} />
                         <input type="hidden" name="announcements" value={JSON.stringify(announcementsList)} />
+                        <input type="hidden" name="stakeBusiness" value={stakeBusiness ? "on" : ""} />
 
                         {/* Section 1: General Info */}
                         <div>
@@ -287,7 +289,7 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
                                         id="meetingType"
                                         name="meetingType"
                                         value={meetingType}
-                                        onChange={(e) => setMeetingType(e.target.value as MeetingType)}
+                                        onChange={handleMeetingTypeChange}
                                         required
                                         className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 focus:ring-offset-1 transition-all"
                                         aria-describedby="meetingType-error"
@@ -606,7 +608,8 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
                             <div className="mt-4 flex items-center gap-2">
                                 <Checkbox
                                     id="stakeBusiness"
-                                    name="stakeBusiness"
+                                    checked={stakeBusiness}
+                                    onCheckedChange={(checked) => setStakeBusiness(checked === true)}
                                     defaultChecked={sacrament.stakeBusiness}
                                     className="size-5  rounded-full data-checked:bg-gray-700 border-gray-700"
                                 />
@@ -658,7 +661,7 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
                                         <div className="sm:col-span-3">
                                             <select
                                                 value={speaker.type}
-                                                onChange={(e) => updateSpeaker(index, 'type', e.target.value as any)}
+                                                onChange={(e) => updateSpeaker(index, 'type', e.target.value as 'speaker' | 'musical-number')}
                                                 className="w-full bg-white px-3 py-2 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2"
                                             >
                                                 <option value="speaker">Speaker</option>

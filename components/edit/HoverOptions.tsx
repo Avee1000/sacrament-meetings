@@ -14,21 +14,23 @@ export default function HoverOptions({ s }:{ s:SacramentMeeting }) {
     const handleDelete = async () => {
         if (isDeleting) return;
         setIsDeleting(true);
-        await toast.promise(
-            new Promise((resolve, reject) => {
-                deleteMeeting(s.id)
-                    .then(() => resolve(true))
-                    .catch((error) => reject(error));
-            }),
-            {
-                loading: "Deleting meeting...",
-                success: () => {
-                    window.location.reload();
-                    return "Meeting deleted successfully!";
-                },
-                error: "Failed to delete meeting. Please try again.",
-            }
-        );
+        try {
+            await toast.promise(
+                new Promise((resolve, reject) => {
+                    deleteMeeting(s.id)
+                        .then(() => resolve(true))
+                        .catch((error) => reject(error));
+                }),
+                {
+                    loading: "Deleting meeting...",
+                    success: () => "Meeting deleted successfully!",
+                    error: "Failed to delete meeting. Please try again.",
+                }
+            );
+            window.location.reload();
+        } catch {
+            setIsDeleting(false);
+        }
     }
 
     useEffect(() => {

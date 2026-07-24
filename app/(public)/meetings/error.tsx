@@ -32,10 +32,10 @@ export default function Error({
                     </button>
 
                     <Link
-                        href="/projects"
+                        href="/meetings"
                         className="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition hover:bg-slate-50"
                     >
-                        Go Back to Projects
+                        Back to all meetings
                     </Link>
                 </div>
             </div>

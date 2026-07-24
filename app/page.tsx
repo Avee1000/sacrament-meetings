@@ -1,5 +1,7 @@
 import Image from "next/image";
 import { roboto } from "./fonts";
+import Link from "next/link";
+
 
 export default function Home() {
   return (
@@ -26,10 +28,16 @@ export default function Home() {
                   Discover God&apos;s plan of happiness for you
                 </p>
               </section>
+                <div className={`${roboto.className} text-[clamp(0.5rem,1.7vw,1.5rem)] my-2 max-sm:leading-2.5 text-right flex gap-2 justify-end`}>
+                 <Link href="/signup" className="bg-white py-2 px-4 rounded-3xl text-black border-2 border-white my-auto">Sign Up</Link>
+                 <Link href="/login" className="py-2 px-5  rounded-3xl border-2 border-white">Log In</Link>
+               </div>
             </div>
           </div>
+
         </div>
       </main>
     </div>
+
   );
 }

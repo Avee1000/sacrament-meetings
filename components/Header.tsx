@@ -1,11 +1,9 @@
-
 import NavLinks from "./NavLinks";
 
 export const list = [
     { href: "/", label: "Home" },
     { href: "/meetings", label: "Meetings" },
-    { href: "/meetings/current", label: "Current" },
-    { href: "/meetings/create", label: "Create" }
+    { href: "/meetings/current", label: "Current" }
 ];
 
 export default function Header() {

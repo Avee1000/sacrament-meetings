@@ -7,11 +7,11 @@ interface CreateMeetingButtonProps extends React.ButtonHTMLAttributes<HTMLButton
 }
 
 // 2. Accept exactly ONE props object as the function argument
-export default function CreateMeetingButton({ onClick, className, ...props }: CreateMeetingButtonProps) {
+export default function CreateMeetingButton({ onClick, ...props }: CreateMeetingButtonProps) {
   return (
     <Button
       {...props}
-      onClick={onClick} // Passes the state modifier down cleanly
+      onClick={onClick}
       className="bg-subheading hover:bg-header2 text-white px-5 py-5.5 rounded-lg text-sm font-bold transition-colors shadow-sm flex items-center gap-2 hover:cursor-pointer"
     >
       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">

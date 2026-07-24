@@ -1,4 +1,4 @@
-import type { SacramentMeeting } from './types';
+import type { SacramentMeeting, User } from './types';
 import { sql } from "@vercel/postgres";
 
 const ITEMS_PER_PAGE = 6;
@@ -44,7 +44,12 @@ export async function getLastPage(): Promise<number> {
         SELECT COUNT(*) FROM meetings
         `;
   const pageNumber = Math.ceil(Number(rows[0].count) / ITEMS_PER_PAGE);
-  console.log(pageNumber + 'last page')
   return pageNumber;
 }
 
+export async function getUserByEmail(email: string): Promise<User | undefined>{
+  const { rows } = await sql`
+    SELECT * FROM users WHERE email = ${email}
+  `;
+  return rows[0] as User;
+}

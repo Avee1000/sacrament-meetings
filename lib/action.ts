@@ -2,8 +2,7 @@
 
 import { sql } from "@vercel/postgres";
 import { revalidatePath } from "next/cache";
-import { success, z } from "zod";
-import { redirect } from "next/navigation";
+import { z } from "zod";
 
 // Zod schemas mirroring your TypeScript interfaces and form requirements
 const HymnSchema = z.object({
@@ -116,10 +115,10 @@ export type State = {
 /**
  * Safely parses JSON payloads coming from the new dynamic UI fields.
  */
-function safeJSONParse(value: FormDataEntryValue | null, fallback: any) {
+function safeJSONParse<T>(value: FormDataEntryValue | null, fallback: T): T {
     if (!value || typeof value !== "string") return fallback;
     try {
-        return JSON.parse(value);
+        return JSON.parse(value) as T;
     } catch {
         return fallback;
     }
@@ -184,7 +183,7 @@ export async function createSacramentMeeting(prevState: State, formData: FormDat
                 speakers, "closingHymn", "closingPrayer"
             ) VALUES (
                 ${date}, ${meetingType}, ${presiding}, ${conducting},
-                ${(announcements || []) as any}::text[], ${JSON.stringify(openingHymn)}::jsonb, ${openingPrayer},
+                ${(announcements || []) as unknown as string[]}::text[], ${JSON.stringify(openingHymn)}::jsonb, ${openingPrayer},
                 ${JSON.stringify(wardBusiness || [])}::jsonb, ${stakeBusiness ?? false}, ${JSON.stringify(sacramentHymn)}::jsonb,
                 ${JSON.stringify(speakers)}::jsonb, ${JSON.stringify(closingHymn)}::jsonb, ${closingPrayer}
             )
@@ -242,7 +241,7 @@ export async function updateSacramentMeeting(id: string | number, prevState: Sta
                 "meetingType" = ${meetingType},
                 presiding = ${presiding},
                 conducting = ${conducting},
-                announcements = ${(announcements || []) as any}::text[],
+                announcements = ${(announcements || []) as unknown as string[]}::text[],
                 "openingHymn" = ${JSON.stringify(openingHymn)}::jsonb,
                 "openingPrayer" = ${openingPrayer},
                 "wardBusiness" = ${JSON.stringify(wardBusiness || [])}::jsonb,
@@ -253,8 +252,7 @@ export async function updateSacramentMeeting(id: string | number, prevState: Sta
                 "closingPrayer" = ${closingPrayer}
             WHERE id = ${id}
         `;
-    } catch (error) {
-        // console.error("Database Error:", error);
+    } catch {
         return {
             message: 'Database Error: Failed to update sacrament meeting.',
         };
@@ -268,6 +266,4 @@ export async function updateSacramentMeeting(id: string | number, prevState: Sta
     }
 }
 
-function superRefine(arg0: (data: any, ctx: any) => void) {
-    throw new Error("Function not implemented.");
-}
+
