@@ -5,9 +5,9 @@ import Link from "next/link";
 export default async function Home() {
 
   return (
-    <div className="block w-full">
-      <main>
-        <div className="relative h-[80dvh] w-full">
+    <div className="flex flex-col min-h-screen w-full">
+      <main className="flex flex-col flex-1 w-full">
+        <div className="relative flex-1 w-full flex items-center">
           <div className="absolute inset-0">
             <Image
               src="/hero.png"

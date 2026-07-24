@@ -24,7 +24,7 @@ export default function RootLayout({
       lang="en"
       className={cn("h-full", "antialiased", roboto.className, "font-sans", inter.variable)}
     >
-      <body className="bodyEl relative">
+      <body className="bodyEl relative min-h-screen m-0 p-0 flex flex-col">
           <Header />
           {children}
           <Toaster position="top-right" />

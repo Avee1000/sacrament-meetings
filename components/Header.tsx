@@ -9,6 +9,8 @@ export const list = [
 
 export default async function Header() {
     const session = await auth();
+
+    console.log("[Session Header]", JSON.stringify(session, null, 2));
     
     // Filter the list dynamically inside the component based on the session
     const filteredList = list.filter(item => {

@@ -43,8 +43,8 @@ export default function NavLinks({ navItems }: NavLinksProps) {
     const pathname = usePathname();
 
     return (
-        <div className="absolute block w-full mx-auto max-w-5xl px-6 z-1 -mt-4">
-            <section className='w-full h-14 rounded-xl bg-header2 flex items-center shadow-md/20 text-white max-sm:justify-evenly'>
+        <div className="absolute w-full mx-auto max-w-5xl px-6 z-1 -mt-4 flex justify-self-center">
+            <section className='w-full mx-auto h-14 rounded-xl bg-header2 flex items-center shadow-md/20 text-white max-sm:justify-evenly'>
                 <nav className='flex flex-row sm:justify-between sm:items-center w-[inherit] max-sm:flex-col'>
                     <ul className="flex items-center gap-0">
                         {navItems.map((item) => (
