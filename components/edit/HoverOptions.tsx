@@ -6,6 +6,7 @@ import EditMeetingDrawer from "./EditMeetingDrawer";
 import { SacramentMeeting } from "@/lib/types";
 import { deleteMeeting } from "@/lib/action";
 import { toast } from "sonner";
+
 export default function HoverOptions({ s }:{ s:SacramentMeeting }) {
     const [ishover, setIsHover] = useState(false);
     const [isOpen, setIsOpen] = useState(false);

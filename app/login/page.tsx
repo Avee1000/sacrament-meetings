@@ -7,6 +7,7 @@ import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
 // Placeholder for user-supplied login action hook
 import { authenticateUser as createUserLogin } from "@/lib/auth-action";
+import { useRouter } from "next/router";
 
 // Define LoginForm State type matching standard server action patterns
 export type LoginState = {
@@ -65,7 +66,7 @@ export default function LoginForm() {
             setShowErrors(true);
             const timer = setTimeout(() => setShowErrors(false), 5000);
             return () => clearTimeout(timer);
-        }
+        } 
     }, [state.errors, state.message, state.success]);
 
     return (
