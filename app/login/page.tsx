@@ -1,3 +1,4 @@
+//login
 'use client'
 
 import { useActionState, useEffect, useState } from "react";
@@ -5,8 +6,10 @@ import { Button } from "@/components/ui/button";
 import { Mail, Lock, LogIn, ShieldCheck } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
-// Placeholder for user-supplied login action hook
+import { useRouter } from "next/navigation";
 import { authenticateUser as createUserLogin } from "@/lib/auth-action";
+import { useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 
 // Define LoginForm State type matching standard server action patterns
 export type LoginState = {
@@ -53,20 +56,51 @@ function Submit() {
 
 
 export default function LoginForm() {
+    const router = useRouter();
     const [showErrors, setShowErrors] = useState(true);
     const [state, formAction] = useActionState(
         createUserLogin,
         initialState
     );
 
+    const searchParams = useSearchParams();
+
     useEffect(() => {
-        if ((state.errors && Object.keys(state.errors).length > 0) || (state.message && !state.success && Object.keys(state.errors || {}).length === 0)) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
-            setShowErrors(true);
-            const timer = setTimeout(() => setShowErrors(false), 5000);
-            return () => clearTimeout(timer);
+        const messageKey = searchParams?.get("message");
+        const messages: Record<string, string> = {
+            "signup-success":
+                "Account created successfully. Please sign in with your new account.",
+        };
+
+        if (messageKey && messages[messageKey]) {
+            toast.success(messages[messageKey]);
+
+            // Remove query parameter after showing toast
+            router.replace("/login");
         }
-    }, [state.errors, state.message, state.success]);
+
+        
+        if (state.message) {
+            // Handle field-level validation errors state if tracked locally
+            if (state.errors && Object.keys(state.errors).length > 0) {
+                setShowErrors(true);
+                const timer = setTimeout(() => setShowErrors(false), 5000);
+                toast.error(state.message, {
+                    description: (
+                        <ul className="list-disc pl-5">
+                            {state.errors && Object.entries(state.errors).map(([key, value]) => (
+                                <li key={key} className="text-red-400">
+                                    <strong>{key}:</strong> {value}
+                                </li>
+                            ))}
+                        </ul>
+                    ),
+                    icon: <></>,
+                });
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [searchParams, router, state]);
 
     return (
         <div

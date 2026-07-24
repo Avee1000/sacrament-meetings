@@ -97,7 +97,7 @@ export default async function MeetingsPage({ searchParams }: PageProps) {
   return (
     <main className="min-h-screen bg-slate-50 pb-20 flex flex-col">
       {/* 1. Hero / Header Banner */}
-      <div className="bg-[#023047] pt-16 pb-24 px-6 border-b-4 border-button-bg shadow-md">
+      <div className="bg-[#023047] pt-20 pb-24 px-6 border-b-4 border-button-bg shadow-md">
         <div className="mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
             {/* Header Text */}

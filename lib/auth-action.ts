@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
 
 const SignupFormSchema = z.object({
@@ -120,7 +120,7 @@ function getUserLoginData(formData: FormData) {
 }
 
 export async function authenticateUser(prevState: LoginState, formData: FormData): Promise<LoginState> {
-// 1. Extract values manually from FormData for Zod validation
+    // 1. Extract values manually from FormData for Zod validation
     const rawData = {
         email: String(formData.get("email") ?? ""),
         password: String(formData.get("password") ?? ""),
@@ -137,7 +137,11 @@ export async function authenticateUser(prevState: LoginState, formData: FormData
 
     try {
         // 2. Trigger NextAuth's signIn passing the formData directly
-        await signIn('credentials', formData);
+        await signIn('credentials', {
+            email: parsed.data.email,
+            password: parsed.data.password,
+            redirectTo: '/meetings',
+        });
     } catch (error) {
         if (error instanceof AuthError) {
             switch (error.type) {
@@ -151,14 +155,19 @@ export async function authenticateUser(prevState: LoginState, formData: FormData
                     };
             }
         }
-        
+
         // 3. Crucial: Re-throw non-AuthErrors (like Next.js redirect errors) so navigation succeeds
         throw error;
     }
-
     revalidatePath('/meetings');
     return {
         message: null,
         success: true,
     };
+}
+
+export async function signOutAction() {
+    await signOut({
+        redirectTo: '/',
+    });
 }

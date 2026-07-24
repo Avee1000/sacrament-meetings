@@ -8,7 +8,7 @@ export default function NotFound() {
                 <p className="mt-3 text-slate-600">The page number you requested does not exist.</p>
                 <div className="mt-6 flex flex-col items-center justify-center gap-3 sm:flex-row">
                     <Link
-                        href="/meetings"
+                        href="/"
                         className="rounded-md border border-slate-300 px-4 py-2 font-semibold text-slate-700 transition hover:bg-slate-50"
                     >
                         Back to all meetings

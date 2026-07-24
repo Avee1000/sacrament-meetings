@@ -1,13 +1,14 @@
-'use client'
+'use client';
 
 import { type SignupState } from "@/lib/auth-action";
 import { Button } from "@/components/ui/button";
-import { useActionState, useEffect } from "react";
-import { Mail, XCircle, Lock, User as UserIcon, ArrowRight, Sparkles, AlertCircle } from "lucide-react";
+import { useActionState, useEffect, useState } from "react";
+import { Mail, XCircle, Lock, User as UserIcon, ArrowRight, Sparkles } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
 import { createUserSignup } from "@/lib/auth-action";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const initialState: SignupState = {
     message: null,
@@ -41,34 +42,45 @@ function Submit() {
         </Button>
     );
 }
+
 export default function SignupForm() {
+    const [showErrors, setShowErrors] = useState(true);
     const [state, formAction] = useActionState(
         createUserSignup,
         initialState
     );
+    const router = useRouter();
 
     useEffect(() => {
+        if (!state) return;
+
         if (state.success) {
-            toast.success(state.message);
-        } else if (state.message) {
-                 toast.error(state.message, {
-                description: (
-                    <ul className="list-disc pl-5">
-                        {state.errors && Object.entries(state.errors).map(([key, value]) => (
-                            <li key={key} className="text-red-400">
-                                <strong>{key}:</strong> {value}
-                            </li>
-                        ))}
-                    </ul>
-                ),
-                cancel: {
-                    label: <XCircle className="size-5"/>,
-                    onClick: () => { }
-                },
-                icon: <></>,
-            });
+            toast.success(state.message || "Account created successfully!");
+            router.push(`/login?message=signup-success`);
+            return;
         }
-    }, [state]);       
+
+        if (state.message) {
+            // Handle field-level validation errors state if tracked locally
+            if (state.errors && Object.keys(state.errors).length > 0) {
+                setShowErrors(true);
+                const timer = setTimeout(() => setShowErrors(false), 5000);
+                toast.error(state.message, {
+                    description: (
+                        <ul className="list-disc pl-5">
+                            {state.errors && Object.entries(state.errors).map(([key, value]) => (
+                                <li key={key} className="text-red-400">
+                                    <strong>{key}:</strong> {value}
+                                </li>
+                            ))}
+                        </ul>
+                    ),
+                    icon: <></>,
+                });
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [state, router]);
 
     return (
         <div
@@ -103,7 +115,7 @@ export default function SignupForm() {
                     )}
 
                     {/* Form Layout */}
-                    <form action={formAction} className="p-6 sm:p-10 space-y-11">
+                    <form action={formAction} className="p-6 sm:p-10 space-y-8">
 
                         {/* Name Field */}
                         <div>
@@ -120,15 +132,15 @@ export default function SignupForm() {
                                 aria-describedby="name-error"
                             />
                             <div id="name-error" aria-live="polite">
-                                {state.errors?.name?.map((error) => (
-                                    <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
+                                {showErrors && state.errors?.name?.map((error) => (
+                                    <p key={error} className="mt-1 text-xs font-medium text-red-500 animate-in fade-in duration-400">{error}</p>
                                 ))}
                             </div>
                         </div>
 
                         {/* Email Field */}
                         <div>
-                            <label htmlFor="email" className=" text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+                            <label htmlFor="email" className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
                                 <Mail className="w-4 h-4 text-gray-400" /> Email Address
                             </label>
                             <input
@@ -141,15 +153,15 @@ export default function SignupForm() {
                                 aria-describedby="email-error"
                             />
                             <div id="email-error" aria-live="polite">
-                                {state.errors?.email?.map((error) => (
-                                    <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
+                                {showErrors && state.errors?.email?.map((error) => (
+                                    <p key={error} className="mt-1 text-xs font-medium text-red-500 animate-in fade-in duration-400">{error}</p>
                                 ))}
                             </div>
                         </div>
 
                         {/* Password Field */}
                         <div>
-                            <label htmlFor="password" className=" text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
+                            <label htmlFor="password" className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
                                 <Lock className="w-4 h-4 text-gray-400" /> Password
                             </label>
                             <input
@@ -162,8 +174,8 @@ export default function SignupForm() {
                                 aria-describedby="password-error"
                             />
                             <div id="password-error" aria-live="polite">
-                                {state.errors?.password?.map((error) => (
-                                    <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>
+                                {showErrors && state.errors?.password?.map((error) => (
+                                    <p key={error} className="mt-1 text-xs font-medium text-red-500 animate-in fade-in duration-400">{error}</p>
                                 ))}
                             </div>
                         </div>
