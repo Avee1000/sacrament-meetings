@@ -172,11 +172,11 @@ export default function EditMeetingForm({ onSuccess, sacrament }: FormProps) {
         setSpeakers(speakers.filter((_, i) => i !== index));
     };
 
-    const updateSpeaker = (index: number, field: keyof SpeakerInputRow, value: string) => {
-        const updated = [...speakers];
-        updated[index][field] = value as SpeakerInputRow[typeof field];
-        setSpeakers(updated);
-    };
+const updateSpeaker = <K extends keyof SpeakerInputRow>(index: number, field: K, value: SpeakerInputRow[K]) => {
+    const updated = [...speakers];
+    updated[index][field] = value;
+    setSpeakers(updated);
+};
 
     // Ward Business managers
     const addBusinessRow = () => {
