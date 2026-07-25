@@ -26,7 +26,7 @@ export default function HeaderContent({ session, formattedDate, navItems }: Head
 
     return (
         <header className="relative">
-            <div id="navigationContainer" className="relative h-auto bg-header text-gray-100 flex justify-between items-center w-full pb-5 pt-2 border-b border-gray-500">
+            <div id="navigationContainer" className="relative h-auto bg-header text-gray-100 flex justify-between items-center w-full sm:pb-5 sm:pt-2 border-b border-gray-500">
                 <div className="mx-auto flex w-full items-center justify-between py-1">
                     <div className="flex items-center justify-center p-4 px-8 bg-header">
                         <p className="rounded-md text-2xl font-bold tracking-tight">Kasoa</p>

@@ -3,7 +3,7 @@
 import { type SignupState } from "@/lib/auth-action";
 import { Button } from "@/components/ui/button";
 import { useActionState, useEffect, useState } from "react";
-import { Mail, XCircle, Lock, User as UserIcon, ArrowRight, Sparkles } from "lucide-react";
+import { Mail, XCircle, Lock, User as UserIcon, ArrowRight, Sparkles, Eye, EyeOff } from "lucide-react";
 import { useFormStatus } from "react-dom";
 import { LoaderIcon } from "lucide-react";
 import { createUserSignup } from "@/lib/auth-action";
@@ -44,6 +44,7 @@ function Submit() {
 }
 
 export default function SignupForm() {
+    const [ showPassword, setShowPassword ] = useState(false);
     const [showErrors, setShowErrors] = useState(true);
     const [state, formAction] = useActionState(
         createUserSignup,
@@ -164,15 +165,20 @@ export default function SignupForm() {
                             <label htmlFor="password" className="text-sm font-semibold text-gray-700 mb-1.5 flex items-center gap-1.5">
                                 <Lock className="w-4 h-4 text-gray-400" /> Password
                             </label>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="At least 5 characters"
-                                required
-                                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 transition-all"
-                                aria-describedby="password-error"
-                            />
+                            <div className="relative">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="At least 5 characters"
+                                    required
+                                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 transition-all"
+                                    aria-describedby="password-error"
+                                />
+                                <span title={showPassword ? "Hide password" : "Show password"} onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-[50%] translate-y-[-50%] cursor-pointer">
+                                    {!showPassword ? <Eye className="size-4 text-gray-400" /> : <EyeOff className="size-4 text-gray-400" />}</span>
+                            </div>
+
                             <div id="password-error" aria-live="polite">
                                 {showErrors && state.errors?.password?.map((error) => (
                                     <p key={error} className="mt-1 text-xs font-medium text-red-500 animate-in fade-in duration-400">{error}</p>

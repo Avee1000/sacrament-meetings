@@ -4,7 +4,7 @@ import { useActionState, useEffect, useState, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Mail, Lock, LogIn, ShieldCheck } from "lucide-react";
 import { useFormStatus } from "react-dom";
-import { LoaderIcon } from "lucide-react";
+import { LoaderIcon, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { authenticateUser as createUserLogin } from "@/lib/auth-action";
 import { useSearchParams } from "next/navigation";
@@ -39,7 +39,7 @@ function Submit() {
             {pending ? (
                 <>
                     <LoaderIcon className="w-4 h-4 animate-spin" />
-                    <span>Signing in...</span>
+                    <span>Signing In...</span>
                 </>
             ) : (
                 <>
@@ -73,6 +73,8 @@ function SearchParamsHandler() {
 
 export default function LoginForm() {
     const [showErrors, setShowErrors] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+
     const [state, formAction] = useActionState(
         createUserLogin,
         initialState
@@ -166,15 +168,20 @@ export default function LoginForm() {
                                     Forgot password?
                                 </a>
                             </div>
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                placeholder="••••••••"
-                                required
-                                className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 transition-all"
-                                aria-describedby="password-error"
-                            />
+                            <div className="relative">
+                                <input
+                                    id="password"
+                                    name="password"
+                                    type={showPassword ? "text" : "password"}
+                                    placeholder="••••••••"
+                                    required
+                                    className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50/50 text-gray-800 text-sm focus:bg-white focus:outline-none focus:ring-2 transition-all"
+                                    aria-describedby="password-error"
+                                />
+                                <span onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-[50%] translate-y-[-50%] cursor-pointer">
+                                    {showPassword ? <Eye className="size-4 text-gray-400" /> : <EyeOff className="size-4 text-gray-400" />}</span>
+                            </div>
+
                             <div id="password-error" aria-live="polite">
                                 {showErrors && state.errors?.password?.map((error) => (
                                     <p key={error} className="mt-1 text-xs font-medium text-red-500">{error}</p>

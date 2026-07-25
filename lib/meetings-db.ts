@@ -53,3 +53,9 @@ export async function getUserByEmail(email: string): Promise<User | undefined>{
   `;
   return rows[0] as User;
 }
+
+export async function deleteUser(email: string) {
+  await sql`
+    DELETE FROM users WHERE email = ${email}
+  `;
+}

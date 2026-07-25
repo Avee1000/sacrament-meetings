@@ -45,7 +45,7 @@ export default function EditMeetingDrawer({ isOpen, onClose, sacrament }: EditPr
                             <EditMeetingForm onSuccess={onClose} sacrament={sacrament} />
 
                         </div>
-                        <DrawerFooter>
+                        <DrawerFooter className="p-4 border-t border-gray-200 bg-white">
                             <DrawerClose render={<Button variant="outline" className="w-[20%] my-0 mx-auto cursor-pointer">Close</Button>} />
                         </DrawerFooter>
                     </DrawerContent>

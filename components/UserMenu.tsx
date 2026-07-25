@@ -2,7 +2,8 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { Session } from 'next-auth'
-import { SignOutButton } from './SignOutButton'
+import { SignOutButton } from './accounts/SignOutButton'
+import { DeleteButton } from './accounts/DeleteAccount'
 
 interface UserMenuProps {
   session: Session | null
@@ -46,7 +47,7 @@ export default function UserMenu({ session }: UserMenuProps) {
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
-        <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold">
+        <div className="size-9 rounded-full bg-white/20 flex items-center justify-center text-white text-sm font-bold">
           {initials}
         </div>
         <span className="text-white text-sm font-medium hidden sm:block pr-2">
@@ -55,7 +56,7 @@ export default function UserMenu({ session }: UserMenuProps) {
       </button>
 
       {isOpen && (
-        <div className="absolute animate-in fade-in zoom-in-50 top-full duration-300 right-0 mt-2 w-56 rounded-xl bg-white shadow-xl border border-gray-100 py-2 z-50" role="menu" aria-orientation="vertical">
+        <div className={`${isOpen ? ` animate-in fade-in zoom-in-50 top-full duration-300` : `animate-out fade-out zoom-out-50 duration-300`} absolute right-0 mt-2 w-56 rounded-xl bg-white shadow-xl border border-gray-100 py-2 z-50`} role="menu" aria-orientation="vertical">
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="text-sm font-semibold text-gray-900 truncate">
               {session.user.name || 'User'}
@@ -64,6 +65,7 @@ export default function UserMenu({ session }: UserMenuProps) {
               {session.user.email}
             </p>
           </div>
+          <DeleteButton />
           <SignOutButton />
         </div>
       )}

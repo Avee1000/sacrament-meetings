@@ -19,12 +19,12 @@ export default async function Home() {
           </div>
           <div className="onTop relative flex flex-row-reverse h-full items-center px-0 sm:px-12 max-sm:flex max-sm:justify-center max-sm:text-center">
             <div className="relative w-[70.5%] top-12 p-8 rounded-lg sm:ml-12 text-text-body">
-              <section className="text-right flex flex-col gap-3">
-                <span className="border-t-4 border-button-bg block max-sm:my-3 w-16 ml-auto mr-0"></span>
-                <p className="text-hero h-auto font-black leading-tight">
+              <section className="sm:text-right flex flex-col gap-3">
+                <span className="border-t-4 border-button-bg block max-sm:my-3 w-16 sm:ml-auto sm:mr-0 max-sm:mx-auto"></span>
+                <p className="text-[3rem] sm:text-hero h-auto font-black leading-tight">
                   Review, Plan, Manage your Sacrament Meeting agenda
                 </p>
-                <p className={`${roboto.className} text-[clamp(0.5rem,2vw,1.5rem)] my-2 leading-5.5 tracking-tight font-thin italic max-sm:leading-2.5`}>
+                <p className={`${roboto.className} text-[clamp(1.5rem,2vw,1.5rem)] my-2 leading-5.5 tracking-tight font-thin italic`}>
                   Discover God&apos;s plan of happiness for you
                 </p>
               </section>

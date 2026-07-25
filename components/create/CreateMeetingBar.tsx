@@ -37,7 +37,6 @@ export default function CreateMeetingBar({ pageNumber }: { pageNumber: number })
                   <CreateMeetingForm onSuccess={() => setIsDrawerOpen(false)} pageNumber={pageNumber} />
                 </div>
                 <DrawerFooter className="p-4 border-t border-gray-200 bg-white ">
-
                   <Button className="w-[10%] my-0 mx-auto cursor-pointer" tabIndex={0} data-slot="drawer-close" onClick={() => setIsDrawerOpen(false)} variant="outline">{isDesktop ? 'Close' : 'Cancel'}</Button>
                 </DrawerFooter>
               </DrawerContent>

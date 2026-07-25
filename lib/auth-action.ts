@@ -5,8 +5,9 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { redirect } from "next/navigation";
 import bcrypt from "bcryptjs";
-import { signIn, signOut } from "@/auth";
+import { auth, signIn, signOut } from "@/auth";
 import { AuthError } from "next-auth";
+import { deleteUser } from "./meetings-db";
 
 const SignupFormSchema = z.object({
     name: z
@@ -167,6 +168,25 @@ export async function authenticateUser(prevState: LoginState, formData: FormData
 }
 
 export async function signOutAction() {
+    await signOut({
+        redirectTo: '/',
+    });
+}
+
+export async function DeleteAccount() {
+    const session = await auth();
+
+    if (!session?.user?.email) {
+        throw new Error("You must be logged in to perform this action.");
+    }
+
+    try {
+        // 3. Pass the extracted email to your database function
+        await deleteUser(session.user.email);
+    } catch (error) {
+        console.error("Failed to delete account:", error);
+        throw new Error("Could not delete account.");
+    }
     await signOut({
         redirectTo: '/',
     });
