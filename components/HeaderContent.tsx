@@ -7,6 +7,8 @@ import Link from 'next/link';
 import UserMenu from './UserMenu';
 import NavLinks from "./NavLinks";
 import { Session } from "next-auth";
+import useMediaQuery from "./useMediaQuery";
+import LoginSignup from "./accounts/LoginSignup";
 
 interface NavItem {
     href: string;
@@ -23,6 +25,7 @@ export default function HeaderContent({ session, formattedDate, navItems }: Head
     const pathname = usePathname();
     const isAuthRoute = pathname?.startsWith('/login') || pathname?.startsWith('/signup');
     const showAuthLinks = !session && !isAuthRoute;
+    const isMobile = useMediaQuery('(max-width: 768px)');
 
     return (
         <header className="relative">
@@ -33,16 +36,9 @@ export default function HeaderContent({ session, formattedDate, navItems }: Head
                     </div>
 
                     <div className="flex items-center gap-3">
-                        <p className="text-lg font-medium text-white pr-4 hidden md:block">{formattedDate}</p>
-                        {showAuthLinks && (
-                            <div className="flex items-center gap-2 mr-2">
-                                <Link href="/signup" className="hidden sm:inline-flex bg-white text-black py-1.5 px-4 rounded-full text-sm font-semibold border-2 border-white hover:bg-gray-100 transition-colors">
-                                    Sign Up
-                                </Link>
-                                <Link href="/login" className="hidden sm:inline-flex py-1.5 px-4 rounded-full text-sm font-semibold border-2 border-white hover:bg-white hover:text-gray-900 transition-colors">
-                                    Log In
-                                </Link>
-                            </div>
+                        <p className="text-lg font-medium text-white pr-4 md:block">{formattedDate}</p>
+                        {showAuthLinks && !isMobile && (
+                            <LoginSignup />
                         )}
                         {session && <UserMenu session={session}/>}
                     </div>
