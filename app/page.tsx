@@ -31,7 +31,7 @@ export default async function Home() {
             <div className="relative w-[70.5%] top-12 p-8 rounded-lg sm:ml-12 text-text-body">
               <section className="sm:text-right flex flex-col gap-3">
                 <span className="border-t-4 border-button-bg block max-sm:my-3 w-16 sm:ml-auto sm:mr-0 max-sm:mx-auto"></span>
-                <p className="text-[3rem] sm:text-hero h-auto font-black leading-tight">
+                <p className="text-[2.5rem] sm:text-hero h-auto font-black leading-tight">
                   Review, Plan, Manage your Sacrament Meeting agenda
                 </p>
                 <p className={`${roboto.className} text-[clamp(1.5rem,2vw,1.5rem)] my-2 leading-5.5 tracking-tight font-thin italic`}>

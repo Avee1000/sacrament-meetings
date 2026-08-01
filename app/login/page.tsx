@@ -116,7 +116,7 @@ export default function LoginForm() {
             <div className="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#000_1px,transparent_1px)] bg-size-[16px_16px]" />
 
             <main className="max-w-md w-full mx-auto relative z-10">
-                <div className="bg-white/95 backdrop-blur-3xl shadow-[0_10px_50px_rgba(0,0,0,0.14)] rounded-[2.5rem] border border-white/60 overflow-hidden transition-all duration-300">
+                <div className="bg-white/95 backdrop-blur-3xl shadow-[0_10px_50px_rgba(0,0,0,0.14)] rounded-[2.5rem] border border-white/60 overflow-hidden transition-all duration-300 max-sm:mx-4">
                     <div className="pt-10 px-8 text-center relative">
                         <div
                             className="w-14 h-14 mx-auto mb-4 rounded-2xl flex items-center justify-center shadow-lg transform -rotate-3 hover:rotate-0 transition-transform duration-300"

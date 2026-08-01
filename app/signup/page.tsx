@@ -90,7 +90,7 @@ export default function SignupForm() {
         >
             <main className="max-w-md w-full mx-auto">
                 {/* Card Container */}
-                <div className="bg-white/95 backdrop-blur-xl shadow-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-300">
+                <div className="bg-white/95 backdrop-blur-xl shadow-2xl rounded-[2.5rem] border border-white/20 overflow-hidden transition-all duration-300 max-sm:mx-4">
 
                     {/* Header Banner */}
                     <div
