@@ -28,7 +28,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
   const standardSpeakers = meeting.speakers.filter(s => s.type !== 'musical-number');
 
   return (
-    <article className="w-full max-w-3xl mx-auto bg-white border border-slate-200/80 rounded-2xl shadow-xl flex flex-col overflow-hidden transition-all duration-300 max-h-[85dvh]">
+    <article className="w-full max-w-3xl mx-auto bg-white border border-slate-200/80 rounded-2xl shadow-xl flex flex-col overflow-hidden transition-all duration-300">
 
       {/* 1. Header Section (Deep Space Blue) */}
       <div className="bg-[#023047] px-8 py-6 text-white flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 relative overflow-hidden">
@@ -38,7 +38,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
         <div>
           <div className="flex items-center gap-3">
             <h2 className="text-2xl font-black tracking-wider text-white uppercase">
-              {meeting.meetingType} Meeting
+              {meeting.meetingType} MEETING
             </h2>
             {meeting.stakeBusiness && (
               <span className="bg-button-bg text-[#023047] text-[11px] font-extrabold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm flex items-center gap-1.5">
@@ -55,7 +55,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
       </div>
 
       {/* 2. Content Body */}
-      <div className="p-6 sm:p-8 text-gray-800 overflow-y-auto space-y-6">
+      <div className="p-6 sm:p-8 text-gray-800 space-y-6">
 
         {/* Presiding & Conducting Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 p-4 bg-slate-50/70 rounded-xl border border-slate-100">
@@ -136,7 +136,7 @@ export default function MeetingDetail({ meeting }: MeetingDetailProps) {
           <div>
             <h3 className="text-subheading text-xs font-bold uppercase tracking-wider mb-3 flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-subheading" />
-              Speakers & Program
+              Speakers
             </h3>
             <div className="grid grid-cols-1 gap-3">
               {standardSpeakers.map((speaker, idx) => (

@@ -1,8 +1,13 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import { roboto } from "./fonts";
 import Link from "next/link";
 import { auth } from "@/auth";
 import LoginSignup from "@/components/accounts/LoginSignup";
+
+export const metadata: Metadata = {
+  title: 'Sacrament Meetings Planner Home',
+};
 
 export default async function Home() {
 

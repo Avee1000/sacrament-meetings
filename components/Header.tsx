@@ -10,8 +10,6 @@ export const list = [
 export default async function Header() {
     const session = await auth();
 
-    console.log("[Session Header]", JSON.stringify(session, null, 2));
-
     const today = new Date();
     const options: Intl.DateTimeFormatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     const formattedDate = today.toLocaleDateString('en-US', options);

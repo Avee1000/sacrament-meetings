@@ -29,7 +29,7 @@ export function Modal({ isOpen, onClose, meeting }: ModalProps) {
     <dialog
       // open={isOpen}
       onClick={handleClose}
-      className={`fixed inset-0 m-0 h-full w-full bg-black/80 flex justify-center items-center backdrop-blur-md z-50 p-4 transition-opacity duration-300 ${isExiting ? "opacity-0" : "opacity-100 animate-in fade-in"
+      className={`fixed inset-0 m-0 h-full flex-col gap-5 w-full bg-black/80 flex justify-center items-center backdrop-blur-md z-50 p-4 transition-opacity duration-300 ${isExiting ? "opacity-0" : "opacity-100 animate-in fade-in"
         }`}    >
       {/* 
         This is the main card container. 
@@ -44,23 +44,25 @@ export function Modal({ isOpen, onClose, meeting }: ModalProps) {
           : "animate-in fade-in slide-in-from-bottom-5 duration-300"
           }`}
       >
-        <div className="absolute left-0 top-0 size-10 bg-white flex justify-center rounded-full cursor-pointer">
-          <PrintButton />
-        </div>
 
         {/* Content area scrolls independently */}
         <div>
           <MeetingDetail meeting={meeting} />
         </div>
+      </div>
 
+      <div className="flex flex-row-reverse mt-5 gap-3">
         {/* Close button is part of the card, not the scrollable area */}
-        <div className="absolute right-0 top-0 size-10 bg-white flex justify-center rounded-full cursor-pointer">
+        <div className="size-12 bg-white flex justify-center rounded-full cursor-pointer hover:-translate-y-2 transition-all duration-300">
           <button
             onClick={handleClose}
             className="cursor-pointer"
           >
             <X className="size-6" />
           </button>
+        </div>
+        <div className=" size-12 bg-white flex justify-center rounded-full cursor-pointer hover:-translate-y-2 transition-all duration-300">
+          <PrintButton />
         </div>
       </div>
     </dialog>

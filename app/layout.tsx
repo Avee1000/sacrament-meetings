@@ -12,6 +12,8 @@ const inter = Inter({subsets:['latin'],variable:'--font-sans'});
 export const metadata: Metadata = {
   title: "Sacrament Meetings",
   description: "Review, plan, and manage sacrament meeting agendas",
+  metadataBase: new URL('https://sacrament-meetings-rho.vercel.app/'),
+
 };
 
 export default function RootLayout({

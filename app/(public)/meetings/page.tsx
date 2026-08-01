@@ -1,3 +1,4 @@
+import { Metadata } from 'next';
 import type { SacramentMeeting } from '@/lib/types';
 import MeetingCard from '@/components/MeetingCard';
 import Loading from '@/components/Loading';
@@ -9,6 +10,9 @@ import { Pagination } from '@/components/Pagination';
 import CreateMeetingBar from '@/components/create/CreateMeetingBar';
 import { notFound } from 'next/navigation';
 
+export const metadata: Metadata = {
+  title: 'Meetings Planner',
+};
 export const dynamic = 'force-dynamic';
 
 interface PageProps {
