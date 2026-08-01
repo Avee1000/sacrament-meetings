@@ -77,9 +77,9 @@ export default function MeetingCard(props: SacramentMeeting) {
             <div className="p-2 rounded-lg bg-white shadow-xs border border-slate-100 text-[#023047] mt-0.5">
               <UserCheck className="w-4 h-4" />
             </div>
-            <div>
+            <div className="min-w-0">
               <h3 className="text-subheading text-[11px] font-bold uppercase tracking-widest mb-0.5">Presiding</h3>
-              <p className="font-semibold text-header2 text-sm sm:text-base">{props.presiding}</p>
+              <p className="font-semibold text-header2 text-sm sm:text-base truncate text-ellipsis min-w-0">{props.presiding}</p>
             </div>
           </div>
           <div className="sm:pl-2 flex items-start gap-1.5">
